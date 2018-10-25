@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/publicacoes"
+            android:checked="false"
+            android:icon="@android:drawable/btn_star"
+            android:title="Publicações"/>
+        <item
+            android:id="@+id/meu_perfil"
+            android:checked="false"
+            android:icon="@android:drawable/btn_star"
+            android:title="Meu perfil"/>
+        <item
+            android:id="@+id/amigos"
+            android:checked="false"
+            android:icon="@android:drawable/btn_star"
+            android:title="Amigos"/>
+
+        <item
+            android:id="@+id/configuracoes"
+            android:checked="false"
+            android:icon="@android:drawable/btn_star"
+            android:title="Configurações"/>
+        <item
+            android:id="@+id/sobre"
+            android:checked="false"
+            android:icon="@android:drawable/btn_star"
+            android:title="Sobre"/>
+        <item
+            android:id="@+id/sair"
+            android:checked="false"
+            android:icon="@android:drawable/btn_star"
+            android:title="Sair"/>
+    </group>
+
+</menu>
