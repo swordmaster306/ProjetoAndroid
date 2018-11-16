@@ -46,19 +46,10 @@ public class MainActivity extends AppCompatActivity {
                 //Alterna o fragment do FrameLayout
                 switch (id){
                     case R.id.publicacoes:
-
-                        return true;
                     case R.id.meu_perfil:
-
-                        return true;
                     case R.id.amigos:
-
-                        return true;
                     case R.id.configuracoes:
-
-                        return true;
                     case R.id.sobre:
-
                         return true;
                     case R.id.sair:
                         //Deve confirmar e voltar para tela de login
