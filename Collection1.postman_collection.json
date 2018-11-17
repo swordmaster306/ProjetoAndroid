@@ -1,0 +1,575 @@
+{
+	"info": {
+		"_postman_id": "f3529373-f58d-4de8-a4cd-5a743b59cbb2",
+		"name": "Collection1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Autenticação",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Email\" : \"joaodaserra@outlook.com\",\n\t\"Senha\" : \"joaodaserra123\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/auth/autenticar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"auth",
+						"autenticar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Cadastro",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Email\" : \"notkid@outlook.com\",\n\t\"Senha\" : \"notkid123\",\n\t\"Nome\"  : \" Not Menino kid\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/auth/cadastro",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"auth",
+						"cadastro"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EditarPerfil",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6WyJqb2FvZGFzZXJyYUBvdXRsb29rLmNvbSIsImpvYW9kYXNlcnJhQG91dGxvb2suY29tIl0sImp0aSI6IjBlZjRjYWY3ODEzYTQyYTJiZjVkNGZhNjNmOTFkNzI1IiwibmJmIjoxNTQyMjUwNjQ2LCJleHAiOjE1NDIyODA2NDYsImlhdCI6MTU0MjI1MDY0NiwiaXNzIjoiRXhlbXBsb0lzc3VlciIsImF1ZCI6IkV4ZW1wbG9BdWRpZW5jZSJ9.G5HIlogrEh6-xoEloOgMW0IoPhgjOJgeUCr1DGsY76Pa7nNqaCEgI0syqLe9zUhdIh62E_bXmy7xZh7F062rfr35DcmFtD2kNlHrqjUAFgvKrrO3CAiwdyKPVkLFh3HAk3Lb8dV6obNK1qzhk_UFB4C7BdKk9l0YpKK_VUDidunFiS3uMYlWOBdeMcMT1wG7eAVTfN16j_dxyeGeBAxthK0PuqoyZdZiPuMQWpxmZHXGECMney77aaAPvkjPGTt2FCRv6-dTeC85yQZ3e08_Vt9PwQI6cbPlHPvrl3JH0pdn23TZXxoSWJmZ9Xq-E7UMQI2ORC7MTuB86Re4_niZHw",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"userId\": 0,\n    \"Nome\": \"Alex\",\n    \"Senha\": \"alex123\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/profile/editar",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"profile",
+						"editar"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "FeedPrincipal",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "BuscarAmigos",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"Nome\":\"A\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/feed/buscaramigos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"feed",
+						"buscaramigos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "MeusAmigos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AmizadesPendentes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": ""
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetHistorias",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/feed/perfil/0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"feed",
+						"perfil",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetHistoriaComentarios",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/feed/comentarios/0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"feed",
+						"comentarios",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AdicionarAmigo",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/addremove/adicionaramigo?usuario1_id=0&usuario2_id=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"addremove",
+						"adicionaramigo"
+					],
+					"query": [
+						{
+							"key": "usuario1_id",
+							"value": "0"
+						},
+						{
+							"key": "usuario2_id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeletarAmigo",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/addremove/deletaramigo?usuario1_id=0&usuario2_id=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"addremove",
+						"deletaramigo"
+					],
+					"query": [
+						{
+							"key": "usuario1_id",
+							"value": "0"
+						},
+						{
+							"key": "usuario2_id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AceitarAmizade",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/addremove/aceitaramizade?usuario1_id=0&usuario2_id=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"addremove",
+						"aceitaramizade"
+					],
+					"query": [
+						{
+							"key": "usuario1_id",
+							"value": "0"
+						},
+						{
+							"key": "usuario2_id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RejeitarAmizade",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/addremove/rejeitaramizade?usuario1_id=0&usuario2_id=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"addremove",
+						"rejeitaramizade"
+					],
+					"query": [
+						{
+							"key": "usuario1_id",
+							"value": "0"
+						},
+						{
+							"key": "usuario2_id",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CriarHistoria",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\n\t\"UserId\" : 0,\n    \"Mensagem\":\"Jogando com o John Marston agora, não vou colocar foto\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/addremove/criarhistoria",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"addremove",
+						"criarhistoria"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeletarHistoria",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\n\t\"id\" : 6\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/addremove/deletarhistoria",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"addremove",
+						"deletarhistoria"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CriarComentario",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/addremove/criarcomentario",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"addremove",
+						"criarcomentario"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeletarComentario",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"id\" : 7\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/addremove/deletarcomentario",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"addremove",
+						"deletarcomentario"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LikeDislike",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\n\t\"userid\" : 0,\n\t\"historiaid\" : 4,\n\t\"likedislike\" : 1\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/addremove/like",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"addremove",
+						"like"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeletarLikeDislike",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\n\t\"userid\" : 1,\n\t\"historiaid\" : 0\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/addremove/deletarlikedislike",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"addremove",
+						"deletarlikedislike"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
