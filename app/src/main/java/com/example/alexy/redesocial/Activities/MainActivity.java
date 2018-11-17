@@ -1,5 +1,4 @@
-package com.example.alexy.redesocial;
-import android.app.Application;
+package com.example.alexy.redesocial.Activities;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -9,6 +8,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import com.example.alexy.redesocial.Fragments.FeedPrincipalFragment;
+import com.example.alexy.redesocial.Fragments.MeusAmigosFragment;
+import com.example.alexy.redesocial.Fragments.SobreFragment;
+import com.example.alexy.redesocial.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FeedPrincipal frag = new FeedPrincipal();
+        FeedPrincipalFragment frag = new FeedPrincipalFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,frag).commit();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -47,10 +52,18 @@ public class MainActivity extends AppCompatActivity {
                 //Alterna o fragment do FrameLayout
                 switch (id){
                     case R.id.publicacoes:
+                        FeedPrincipalFragment frag = new FeedPrincipalFragment();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,frag).commit();
+                        return true;
                     case R.id.meu_perfil:
                     case R.id.amigos:
+                        MeusAmigosFragment meusAmigosFragment = new MeusAmigosFragment();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,meusAmigosFragment).commit();
+                        return true;
                     case R.id.configuracoes:
                     case R.id.sobre:
+                        SobreFragment sobreFrag = new SobreFragment();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,sobreFrag).commit();
                         return true;
                     case R.id.sair:
                         //Deve confirmar e voltar para tela de login

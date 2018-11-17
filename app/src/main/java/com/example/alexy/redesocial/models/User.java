@@ -1,67 +1,70 @@
 package com.example.alexy.redesocial.models;
 
 public class User {
+
+
+    public Integer userId;
+    public String nome;
+    public String email;
+    public String senha;
+    public Integer qtdAmigos;
+    public Integer qtdHistorias;
+
     public Integer getUserId() {
-        return UserId;
+        return userId;
     }
 
     public void setUserId(Integer userId) {
-        UserId = userId;
+        this.userId = userId;
     }
 
     public String getNome() {
-        return Nome;
+        return nome;
     }
 
     public void setNome(String nome) {
-        Nome = nome;
+        this.nome = nome;
     }
 
     public String getEmail() {
-        return Email;
+        return email;
     }
 
     public void setEmail(String email) {
-        Email = email;
+        this.email = email;
     }
 
     public String getSenha() {
-        return Senha;
+        return senha;
     }
 
     public void setSenha(String senha) {
-        Senha = senha;
+        this.senha = senha;
     }
 
     public Integer getQtdAmigos() {
-        return QtdAmigos;
+        return qtdAmigos;
     }
 
     public void setQtdAmigos(Integer qtdAmigos) {
-        QtdAmigos = qtdAmigos;
+        this.qtdAmigos = qtdAmigos;
     }
 
-    public Integer getQtdHistoria() {
-        return QtdHistoria;
+    public Integer getQtdHistorias() {
+        return qtdHistorias;
     }
 
-    public void setQtdHistoria(Integer qtdHistoria) {
-        QtdHistoria = qtdHistoria;
+    public void setQtdHistorias(Integer qtdHistorias) {
+        this.qtdHistorias = qtdHistorias;
     }
 
     public String getFotoPerfil() {
-        return FotoPerfil;
+        return fotoPerfil;
     }
 
     public void setFotoPerfil(String fotoPerfil) {
-        FotoPerfil = fotoPerfil;
+        this.fotoPerfil = fotoPerfil;
     }
 
-    public Integer UserId;
-    public String Nome;
-    public String Email;
-    public String Senha;
-    public Integer QtdAmigos;
-    public Integer QtdHistoria;
-    public String FotoPerfil;
+    public String fotoPerfil;
 }

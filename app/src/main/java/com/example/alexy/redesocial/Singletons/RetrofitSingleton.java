@@ -1,6 +1,7 @@
-package com.example.alexy.redesocial;
+package com.example.alexy.redesocial.Singletons;
 
 
+import com.example.alexy.redesocial.API.RedeSocialService;
 import com.example.alexy.redesocial.models.Token;
 
 import retrofit2.Retrofit;

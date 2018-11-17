@@ -1,15 +1,14 @@
-package com.example.alexy.redesocial;
+package com.example.alexy.redesocial.Activities;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
-import android.support.design.widget.Snackbar;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.alexy.redesocial.R;
+import com.example.alexy.redesocial.Singletons.RetrofitSingleton;
 import com.example.alexy.redesocial.models.User;
 import com.example.alexy.redesocial.utils.RegExValidation;
 
