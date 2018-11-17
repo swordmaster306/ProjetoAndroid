@@ -1,6 +1,8 @@
 package com.example.alexy.redesocial;
 
 
+import com.example.alexy.redesocial.models.Token;
+
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -8,6 +10,7 @@ public class RetrofitSingleton {
 
 
     public Retrofit retrofit;
+    public Token token;
     public RedeSocialService redesocialapi;
     private static final RetrofitSingleton INSTANCE = new RetrofitSingleton();
 

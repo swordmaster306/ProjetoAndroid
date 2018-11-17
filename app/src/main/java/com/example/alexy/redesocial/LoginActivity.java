@@ -3,13 +3,20 @@ package com.example.alexy.redesocial;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.alexy.redesocial.models.Token;
+import com.example.alexy.redesocial.models.User;
 import com.example.alexy.redesocial.utils.RegExValidation;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -50,8 +57,31 @@ public class LoginActivity extends AppCompatActivity {
         if (this.validateForm()) {
             String pass = this.password.getText().toString();
             String email = this.email.getText().toString();
+            User user = new User();
+            user.setSenha(pass);
+            user.setEmail(email);
+            Call<Token> autenticacao = RetrofitSingleton.getInstance().redesocialapi.autenticar(user);
+            Callback<Token> autenticacaoCallback = new Callback<Token>() {
+                @Override
+                public void onResponse(Call<Token> call, Response<Token> response) {
+                    Token token = response.body();
+                    RetrofitSingleton.getInstance().token = token;
+                    if(token.authenticated) {
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    }else{
+                        Toast.makeText(LoginActivity.this, "Usuário não cadastrado", Toast.LENGTH_SHORT).show();
 
-            this.changeActivity(MainActivity.class);
+                    }
+                }
+                @Override
+                public void onFailure(Call<Token> call, Throwable t) {
+                    Toast.makeText(LoginActivity.this, "Falha na requisição", Toast.LENGTH_SHORT).show();
+
+                }
+            };
+
+            autenticacao.enqueue(autenticacaoCallback);
         }
     }
 
