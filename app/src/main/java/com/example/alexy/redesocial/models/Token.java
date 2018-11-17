@@ -5,6 +5,16 @@ import java.util.Date;
 public class Token {
 
     public boolean authenticated;
+    public int userid;
+
+    public int getUserid() {
+        return userid;
+    }
+
+    public void setUserid(int userid) {
+        this.userid = userid;
+    }
+
     public String created;
     public String expiration;
     public String accessToken;
