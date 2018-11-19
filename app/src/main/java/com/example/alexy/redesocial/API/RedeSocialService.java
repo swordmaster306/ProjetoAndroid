@@ -27,4 +27,10 @@ public interface RedeSocialService {
 
     @GET("api/feed/meusamigos/{id}")
     Call<List<User>> getMeusAmigos(@Path("id") int id);
+
+    @GET("api/feed/buscaramigos/{nome}")
+    Call<List<User>> buscarAmigos(@Path("nome") String nome);
+
+    @GET("api/feed/historias/{id}")
+    Call<List<Historia>> getPerfilHistorias(@Path("id") int id);
 }

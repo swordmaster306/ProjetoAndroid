@@ -8,10 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
+import com.example.alexy.redesocial.Fragments.BuscaFragment;
 import com.example.alexy.redesocial.Fragments.FeedPrincipalFragment;
 import com.example.alexy.redesocial.Fragments.MeusAmigosFragment;
+import com.example.alexy.redesocial.Fragments.PerfilFragment;
 import com.example.alexy.redesocial.Fragments.SobreFragment;
 import com.example.alexy.redesocial.R;
 
@@ -20,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private ActionBarDrawerToggle actionBarDrawerToggle;
-    Busca buscafrag = new Busca();
+    BuscaFragment buscafrag = new BuscaFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,11 +58,17 @@ public class MainActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,frag).commit();
                         return true;
                     case R.id.meu_perfil:
+                        //Carregar fragment de perfil
+                        //PerfilFragment perfilFragment = new PerfilFragment();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,perfilFragment).commit();
+                        return true;
                     case R.id.amigos:
                         MeusAmigosFragment meusAmigosFragment = new MeusAmigosFragment();
                         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,meusAmigosFragment).commit();
                         return true;
                     case R.id.configuracoes:
+                        //Carregar possiveis configuracoes
+                        return true;
                     case R.id.sobre:
                         SobreFragment sobreFrag = new SobreFragment();
                         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,sobreFrag).commit();
@@ -91,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.botao_busca:
+                //deve mostrar caixa de busca , quando o usuario digitar o texto e dar enter, executar comando abaixo com putextra do text
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,buscafrag).commit();
                 return true;
         }

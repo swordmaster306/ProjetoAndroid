@@ -22,16 +22,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FeedPrincipalFragment extends Fragment {
+public class PerfilFragment extends Fragment {
 
 
     private ViewGroup feed;
 
-    public FeedPrincipalFragment() {
+    public PerfilFragment() {
         // Required empty public constructor
     }
 
@@ -40,16 +39,16 @@ public class FeedPrincipalFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_feed_principal, container, false);
+        View v = inflater.inflate(R.layout.fragment_perfil, container, false);
 
-        feed = v.findViewById(R.id.container);
+        feed = v.findViewById(R.id.container2);
 
-        Call<List<Historia>> getFeedApi = RetrofitSingleton.getInstance().redesocialapi.getFeedPrincipal(RetrofitSingleton.getInstance().token.userid);
+        Call<List<Historia>> getFeedApi = RetrofitSingleton.getInstance().redesocialapi.getPerfilHistorias(RetrofitSingleton.getInstance().token.userid);
         Callback<List<Historia>> callbackFeed =  new Callback<List<Historia>>() {
             @Override
             public void onResponse(Call<List<Historia>> call, Response<List<Historia>> response) {
-                List<Historia> historiasAmigos = response.body();
-                for (Historia h : historiasAmigos)
+                List<Historia> historias = response.body();
+                for (Historia h : historias)
                 {
                     popularFeed(h);
                 }
@@ -104,5 +103,6 @@ public class FeedPrincipalFragment extends Fragment {
 
         feed.addView(cardView);
     }
+
 
 }

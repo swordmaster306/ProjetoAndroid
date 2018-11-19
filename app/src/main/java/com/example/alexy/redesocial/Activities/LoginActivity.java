@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText email;
     private EditText password;
+    private Button loginButton;
 
     public void onForgetPassClickHandler(View v) {
         System.out.println("onForgetPassClickHandler");
@@ -58,6 +60,8 @@ public class LoginActivity extends AppCompatActivity {
             user.setSenha(pass);
             user.setEmail(email);
             Call<Token> autenticacao = RetrofitSingleton.getInstance().redesocialapi.autenticar(user);
+            loginButton.setEnabled(false);
+            loginButton.setText("Logando....");
             Callback<Token> autenticacaoCallback = new Callback<Token>() {
                 @Override
                 public void onResponse(Call<Token> call, Response<Token> response) {
@@ -68,13 +72,15 @@ public class LoginActivity extends AppCompatActivity {
                         startActivity(intent);
                     }else{
                         Toast.makeText(LoginActivity.this, "Usuário não cadastrado", Toast.LENGTH_SHORT).show();
-
+                        loginButton.setEnabled(true);
+                        loginButton.setText("Entrar");
                     }
                 }
                 @Override
                 public void onFailure(Call<Token> call, Throwable t) {
-                    Toast.makeText(LoginActivity.this, "Falha na requisição", Toast.LENGTH_SHORT).show();
-
+                    Toast.makeText(LoginActivity.this, "Falha na requisição, verifique sua conexão", Toast.LENGTH_SHORT).show();
+                    loginButton.setEnabled(true);
+                    loginButton.setText("Entrar");
                 }
             };
 
@@ -92,9 +98,6 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         this.setUpBinds();
-        /*Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();*/
+        loginButton = (Button) findViewById(R.id.login);
     }
 }

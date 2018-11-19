@@ -1,6 +1,7 @@
 package com.example.alexy.redesocial.Fragments;
 
 
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
@@ -50,7 +51,6 @@ public class MeusAmigosFragment extends Fragment {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                 List<User> meusAmigos = response.body();
-                Toast.makeText(getActivity(), meusAmigos.get(0).getNome(), Toast.LENGTH_SHORT).show();
                 for (User u : meusAmigos)
                 {
                     popularFeed(u);
@@ -70,15 +70,25 @@ public class MeusAmigosFragment extends Fragment {
 
     private void popularFeed(User u){
 
-        CardView cardView = (CardView) getActivity().getLayoutInflater().inflate(R.layout.usuario_card,feed,false);
-        TextView nome = (TextView) cardView.findViewById(R.id.publicacaoNome);
-        ImageView foto = (ImageView) cardView.findViewById(R.id.publicacaoFoto);
+        CardView card = (CardView) getActivity().getLayoutInflater().inflate(R.layout.fragment_busca, feed, false);
+        TextView t = (TextView) card.findViewById(R.id.ResultadoNome);
+        TextView t2 = (TextView) card.findViewById(R.id.ResultadoDado);
+        ImageView foto = (ImageView) card.findViewById(R.id.ResultadoImagem);
+        t.setText(u.getNome());
+        t2.setText(u.getQtdHistorias().toString());
 
-        nome.setText(u.getNome());
+        card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getActivity(), "Ir para perfil", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         if(u.getFotoPerfil() != null)
             foto.setImageBitmap(ConversorBase64.b64tobitmap(u.getFotoPerfil()));
 
-        feed.addView(cardView);
+        feed.addView(card);
+
     }
 
 }
