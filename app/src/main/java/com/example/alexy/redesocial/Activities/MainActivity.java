@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private ActionBarDrawerToggle actionBarDrawerToggle;
+    Busca buscafrag = new Busca();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.botao_busca:
-                System.out.println("Buscar");
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,buscafrag).commit();
                 return true;
         }
         if(actionBarDrawerToggle.onOptionsItemSelected(item)){
