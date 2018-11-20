@@ -8,7 +8,22 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/content_frame"/>
+        android:id="@+id/content_frame">
+
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="16dp"
+            app:elevation="4dp"
+            app:pressedTranslationZ="8dp"
+            app:borderWidth="0dp"
+            app:fabSize="normal"
+            android:src="@android:drawable/ic_menu_edit" />
+
+    </FrameLayout>
 
     <android.support.design.widget.NavigationView
         android:layout_width="240dp"

@@ -1,6 +1,7 @@
 package com.example.alexy.redesocial.Activities;
 import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -8,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.alexy.redesocial.Fragments.BuscaFragment;
 import com.example.alexy.redesocial.Fragments.FeedPrincipalFragment;
@@ -22,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     BuscaFragment buscafrag = new BuscaFragment();
+    private FloatingActionButton publishFab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,16 @@ public class MainActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+
+        publishFab = (FloatingActionButton) findViewById(R.id.fabEdit);
+
+        publishFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this,PublishActivity.class);
+                startActivity(i);
+            }
+        });
 
         navigationView = (NavigationView) findViewById(R.id.navigation_view);
 
@@ -59,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     case R.id.meu_perfil:
                         //Carregar fragment de perfil
-                        //PerfilFragment perfilFragment = new PerfilFragment();
-                        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,perfilFragment).commit();
+                        PerfilFragment perfilFragment = new PerfilFragment();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, perfilFragment).commit();
                         return true;
                     case R.id.amigos:
                         MeusAmigosFragment meusAmigosFragment = new MeusAmigosFragment();
