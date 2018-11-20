@@ -33,4 +33,7 @@ public interface RedeSocialService {
 
     @GET("api/feed/historias/{id}")
     Call<List<Historia>> getPerfilHistorias(@Path("id") int id);
+
+    @POST("api/addremove/criarhistoria")
+    Call<Void> criarHistoria(@Body Historia historia);
 }

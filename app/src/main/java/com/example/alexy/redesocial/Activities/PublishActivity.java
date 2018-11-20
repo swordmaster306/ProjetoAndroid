@@ -9,9 +9,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.alexy.redesocial.R;
+import com.example.alexy.redesocial.Singletons.RetrofitSingleton;
+import com.example.alexy.redesocial.models.Historia;
 import com.example.alexy.redesocial.utils.ConversorBase64;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class PublishActivity extends AppCompatActivity {
@@ -19,6 +26,9 @@ public class PublishActivity extends AppCompatActivity {
     private Button btnCamera;
     private ImageView imageView;
     // private TextView textView;
+
+    private String fotoB64;
+    private String Mensagem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +58,32 @@ public class PublishActivity extends AppCompatActivity {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             imageView.setImageBitmap(imageBitmap);
-
-            // String encodeImage = ConversorBase64.bitmaptob64(imageBitmap);
-            // textView.setText(encodeImage);
-
+            fotoB64 = ConversorBase64.bitmaptob64(imageBitmap);
         }
+    }
+
+
+    //Chamar esse método ao confirmar a postagem da história
+    public void criarHistoria(){
+        Historia hist = new Historia();
+        hist.userId = RetrofitSingleton.getInstance().token.userid;
+        //Daniel, substitua essa mensagem cravada pela mensagem que o usuario vai digitar
+        hist.mensagem = "Test de historia via android";
+        if(fotoB64 != null)
+            hist.foto = fotoB64;
+
+        Call<Void> criarhistoria = RetrofitSingleton.getInstance().redesocialapi.criarHistoria(hist);
+        Callback<Void> callbackCriarHistoria =  new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                Toast.makeText(PublishActivity.this, "História criada com sucesso", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(PublishActivity.this, "Falha na criação da história", Toast.LENGTH_SHORT).show();
+            }
+        };
+        criarhistoria.enqueue(callbackCriarHistoria);
     }
 }
