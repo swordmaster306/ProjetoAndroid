@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,7 +24,7 @@ import retrofit2.Response;
 
 public class PublishActivity extends AppCompatActivity {
 
-    private Button btnCamera;
+    private ImageButton btnCamera;
     private ImageView imageView;
     // private TextView textView;
 
@@ -35,7 +36,7 @@ public class PublishActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publish);
 
-        btnCamera = (Button) findViewById(R.id.btnCamera);
+        btnCamera = (ImageButton) findViewById(R.id.btnCamera);
         imageView = (ImageView) findViewById(R.id.imageView);
         //textView = (TextView) findViewById(R.id.textView);
 
