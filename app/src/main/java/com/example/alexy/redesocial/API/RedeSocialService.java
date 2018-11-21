@@ -36,4 +36,7 @@ public interface RedeSocialService {
 
     @POST("api/addremove/criarhistoria")
     Call<Void> criarHistoria(@Body Historia historia);
+
+    @POST("api/addremove/likedislike")
+    Call<Void> darlikedislike(@Body LikeDislike ld);
 }

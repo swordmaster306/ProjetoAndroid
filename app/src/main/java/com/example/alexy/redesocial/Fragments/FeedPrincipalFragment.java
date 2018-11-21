@@ -7,6 +7,7 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import com.example.alexy.redesocial.R;
 import com.example.alexy.redesocial.Singletons.RetrofitSingleton;
 import com.example.alexy.redesocial.models.Historia;
+import com.example.alexy.redesocial.models.LikeDislike;
 import com.example.alexy.redesocial.utils.ConversorBase64;
 
 import java.util.List;
@@ -21,6 +23,7 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.Body;
 
 
 /**
@@ -44,7 +47,8 @@ public class FeedPrincipalFragment extends Fragment {
 
         feed = v.findViewById(R.id.container);
 
-        Call<List<Historia>> getFeedApi = RetrofitSingleton.getInstance().redesocialapi.getFeedPrincipal(RetrofitSingleton.getInstance().token.userid);
+
+        Call<List<Historia>> getFeedApi = RetrofitSingleton.getInstance().redesocialapi.getPerfilHistorias(RetrofitSingleton.getInstance().token.userid);
         Callback<List<Historia>> callbackFeed =  new Callback<List<Historia>>() {
             @Override
             public void onResponse(Call<List<Historia>> call, Response<List<Historia>> response) {
@@ -69,8 +73,9 @@ public class FeedPrincipalFragment extends Fragment {
 
     private void popularFeed(Historia h){
         //Configurar like e dislike, utilizar h.deulike para saber se o usuario deu like na historia e tratar devidamene
+        final Historia historia = h;
         CardView cardView;
-        if(h.foto != null){
+        if(historia.foto != null){
             cardView = (CardView) getActivity().getLayoutInflater().inflate(R.layout.feed_principal_card_com_foto,feed,false);
             TextView nome = (TextView) cardView.findViewById(R.id.publicacaoNome);
             TextView data = (TextView) cardView.findViewById(R.id.publicacaoDataHora);
@@ -78,10 +83,72 @@ public class FeedPrincipalFragment extends Fragment {
             TextView likes = (TextView) cardView.findViewById(R.id.publicacaoLikeCounter);
             TextView dislikes = (TextView) cardView.findViewById(R.id.publicacaoDislikeCounter);
             ImageView foto = (ImageView) cardView.findViewById(R.id.publicacaoFoto);
+            final Button likeButton = (Button) cardView.findViewById(R.id.publicacaoLikeButton);
+            final Button dislikeButton = (Button) cardView.findViewById(R.id.publicacaoDislikeButton);
+            switch(historia.deulike){
+                case 1:
+                    likeButton.setEnabled(false);
+                    break;
+                case 2:
+                    dislikeButton.setEnabled(false);
+                    break;
+            }
+            likeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LikeDislike ld = new LikeDislike();
+                    ld.historiaid = historia.id;
+                    ld.userid = RetrofitSingleton.getInstance().token.userid;
+                    ld.likedislike = 1;
+                    Call<Void> likeCall = RetrofitSingleton.getInstance().redesocialapi.darlikedislike(ld);
+                    Callback<Void> likeCallback = new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            Toast.makeText(getActivity(), "Like realizado com sucesso", Toast.LENGTH_SHORT).show();
+                            if(!dislikeButton.isEnabled()) {
+                                dislikeButton.setEnabled(true);
+                            }
+                            likeButton.setEnabled(false);
+                        }
 
-            nome.setText(h.getUsername());
-            data.setText(h.getData());
-            mensagem.setText(h.getMensagem());
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Toast.makeText(getActivity(), "Erro no like", Toast.LENGTH_SHORT).show();
+                        }
+                    };
+                    likeCall.enqueue(likeCallback);
+                }
+            });
+            dislikeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LikeDislike ld = new LikeDislike();
+                    ld.historiaid = historia.id;
+                    ld.userid = RetrofitSingleton.getInstance().token.userid;
+                    ld.likedislike = 0;
+                    Call<Void> dislikeCall = RetrofitSingleton.getInstance().redesocialapi.darlikedislike(ld);
+                    Callback<Void> likeCallback = new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            Toast.makeText(getActivity(), "Dislike realizado com sucesso", Toast.LENGTH_SHORT).show();
+                            if(!likeButton.isEnabled()) {
+                                likeButton.setEnabled(true);
+                            }
+                            //dislikeButton.setEnabled(false);
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Toast.makeText(getActivity(), "Erro no dislike", Toast.LENGTH_SHORT).show();
+                        }
+                    };
+                    dislikeCall.enqueue(likeCallback);
+                }
+            });
+
+            nome.setText(historia.getUsername());
+            data.setText(String.valueOf(historia.deulike));
+            mensagem.setText(historia.getMensagem());
             likes.setText(String.valueOf(h.getLikes()));
             dislikes.setText(String.valueOf(h.getDislikes()));
             foto.setImageBitmap(ConversorBase64.b64tobitmap(h.foto));
@@ -92,12 +159,75 @@ public class FeedPrincipalFragment extends Fragment {
             TextView mensagem = (TextView) cardView.findViewById(R.id.publicacaoTexto);
             TextView likes = (TextView) cardView.findViewById(R.id.publicacaoLikeCounter);
             TextView dislikes = (TextView) cardView.findViewById(R.id.publicacaoDislikeCounter);
+            final Button likeButton = (Button) cardView.findViewById(R.id.publicacaoLikeButton);
+            final Button dislikeButton = (Button) cardView.findViewById(R.id.publicacaoDislikeButton);
+            switch(historia.deulike){
+                case 1:
+                    likeButton.setEnabled(false);
+                    break;
+                case 2:
+                    dislikeButton.setEnabled(false);
+                    break;
+            }
 
-            nome.setText(h.getUsername());
-            data.setText(h.getData());
-            mensagem.setText(h.getMensagem());
-            likes.setText(String.valueOf(h.getLikes()));
-            dislikes.setText(String.valueOf(h.getDislikes()));
+            likeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LikeDislike ld = new LikeDislike();
+                    ld.historiaid = historia.id;
+                    ld.userid = RetrofitSingleton.getInstance().token.userid;
+                    ld.likedislike = 1;
+                    Call<Void> likeCall = RetrofitSingleton.getInstance().redesocialapi.darlikedislike(ld);
+                    Callback<Void> likeCallback = new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            Toast.makeText(getActivity(), "Like realizado com sucesso", Toast.LENGTH_SHORT).show();
+                            if(!dislikeButton.isEnabled()) {
+                                dislikeButton.setEnabled(true);
+                            }
+                            likeButton.setEnabled(false);
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Toast.makeText(getActivity(), "Erro no like", Toast.LENGTH_SHORT).show();
+                        }
+                    };
+                    likeCall.enqueue(likeCallback);
+                }
+            });
+            dislikeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LikeDislike ld = new LikeDislike();
+                    ld.historiaid = historia.id;
+                    ld.userid = RetrofitSingleton.getInstance().token.userid;
+                    ld.likedislike = 0;
+                    Call<Void> dislikeCall = RetrofitSingleton.getInstance().redesocialapi.darlikedislike(ld);
+                    Callback<Void> likeCallback = new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            Toast.makeText(getActivity(), "Dislike realizado com sucesso", Toast.LENGTH_SHORT).show();
+                            if(!likeButton.isEnabled()) {
+                                likeButton.setEnabled(true);
+                            }
+                            dislikeButton.setEnabled(false);
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Toast.makeText(getActivity(), "Erro no dislike", Toast.LENGTH_SHORT).show();
+                        }
+                    };
+                    dislikeCall.enqueue(likeCallback);
+                }
+            });
+
+            nome.setText(historia.getUsername());
+            data.setText(String.valueOf(historia.deulike));
+            mensagem.setText(historia.getMensagem());
+            likes.setText(String.valueOf(historia.getLikes()));
+            dislikes.setText(String.valueOf(historia.getDislikes()));
         }
 
 
