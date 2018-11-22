@@ -1,12 +1,16 @@
 package com.example.alexy.redesocial.Fragments;
 
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,8 +18,10 @@ import android.widget.Toast;
 import com.example.alexy.redesocial.R;
 import com.example.alexy.redesocial.Singletons.RetrofitSingleton;
 import com.example.alexy.redesocial.models.Historia;
+import com.example.alexy.redesocial.models.LikeDislike;
 import com.example.alexy.redesocial.utils.ConversorBase64;
 import com.example.alexy.redesocial.utils.Formatter;
+import com.example.alexy.redesocial.utils.Status;
 
 import java.util.List;
 
@@ -67,7 +73,7 @@ public class PerfilFragment extends Fragment {
     }
 
 
-    private void popularFeed(Historia h){
+    private void popularFeed(final Historia h){
         //Configurar like e dislike, utilizar h.deulike para saber se o usuario deu like na historia e tratar devidamene
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         int layout = h.foto != null ? R.layout.feed_principal_card_com_foto : R.layout.feed_principal_card_sem_foto;
@@ -76,8 +82,82 @@ public class PerfilFragment extends Fragment {
         TextView nome = (TextView) cardView.findViewById(R.id.publicacaoNome);
         TextView data = (TextView) cardView.findViewById(R.id.publicacaoDataHora);
         TextView mensagem = (TextView) cardView.findViewById(R.id.publicacaoTexto);
-        TextView likes = (TextView) cardView.findViewById(R.id.publicacaoLikeCounter);
-        TextView dislikes = (TextView) cardView.findViewById(R.id.publicacaoDislikeCounter);
+        final TextView likes = (TextView) cardView.findViewById(R.id.publicacaoLikeCounter);
+        final TextView dislikes = (TextView) cardView.findViewById(R.id.publicacaoDislikeCounter);
+
+        final ImageView likeButton = cardView.findViewById(R.id.likeButton);
+        final ImageView dislikeButton = cardView.findViewById(R.id.dislikeButton);
+
+        likeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LikeDislike ld = new LikeDislike();
+                ld.historiaid = h.id;
+                ld.userid = RetrofitSingleton.getInstance().token.userid;
+                ld.likedislike = 1;
+                Call<Void> likeCall = RetrofitSingleton.getInstance().redesocialapi.darlikedislike(ld);
+                Callback<Void> likeCallback = new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        Toast.makeText(getActivity(), "Like realizado com sucesso", Toast.LENGTH_SHORT).show();
+                        dislikeButton.setEnabled(true);
+                        dislikeButton.clearColorFilter();
+                        likeButton.setEnabled(false);
+                        likeButton.setColorFilter(Color.BLUE, PorterDuff.Mode.SRC_IN);
+                        likes.setText(String.valueOf(Integer.valueOf(likes.getText().toString()) +1));
+                        dislikes.setText(String.valueOf(Integer.valueOf(dislikes.getText().toString())-1));
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Toast.makeText(getActivity(), "Erro no like", Toast.LENGTH_SHORT).show();
+                    }
+                };
+                likeCall.enqueue(likeCallback);
+            }
+        });
+
+        dislikeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LikeDislike ld = new LikeDislike();
+                ld.historiaid = h.id;
+                ld.userid = RetrofitSingleton.getInstance().token.userid;
+                ld.likedislike = 0;
+                Call<Void> dislikeCall = RetrofitSingleton.getInstance().redesocialapi.darlikedislike(ld);
+                Callback<Void> likeCallback = new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        Toast.makeText(getActivity(), "Dislike realizado com sucesso", Toast.LENGTH_SHORT).show();
+                        likeButton.setEnabled(true);
+                        likeButton.clearColorFilter();
+                        dislikeButton.setEnabled(false);
+                        dislikeButton.setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+                        likes.setText(String.valueOf(Integer.valueOf(likes.getText().toString()) -1));
+                        dislikes.setText(String.valueOf(Integer.valueOf(dislikes.getText().toString())+1));
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Toast.makeText(getActivity(), "Erro no dislike", Toast.LENGTH_SHORT).show();
+                    }
+                };
+                dislikeCall.enqueue(likeCallback);
+            }
+        });
+
+
+        switch (h.deulike) {
+            case Status.LIKED:
+                likeButton.setSelected(true);
+                likeButton.setColorFilter(Color.BLUE, PorterDuff.Mode.SRC_IN);
+                break;
+            case Status.DISLIKED:
+                dislikeButton.setSelected(true);
+                dislikeButton.setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
+                break;
+        }
+
 
         String date;
         try {

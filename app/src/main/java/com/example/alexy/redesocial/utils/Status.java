@@ -1,7 +1,7 @@
 package com.example.alexy.redesocial.utils;
 
 public final class Status {
-    public static Integer NO_STATUS = 0;
-    public static Integer LIKED = 1;
-    public static Integer DISLIKED = 2;
+    final public static int NO_STATUS = 0;
+    final public static int LIKED = 1;
+    final public static int DISLIKED = 2;
 }
