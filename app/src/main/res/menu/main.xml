@@ -6,6 +6,7 @@
         android:id="@+id/botao_busca"
         android:icon="@android:drawable/ic_menu_search"
         android:title="AÇÃO"
+        app:actionViewClass="android.widget.SearchView"
         app:showAsAction="always" />
 
 </menu>
