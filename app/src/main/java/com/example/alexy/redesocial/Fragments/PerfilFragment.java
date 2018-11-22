@@ -15,6 +15,7 @@ import com.example.alexy.redesocial.R;
 import com.example.alexy.redesocial.Singletons.RetrofitSingleton;
 import com.example.alexy.redesocial.models.Historia;
 import com.example.alexy.redesocial.utils.ConversorBase64;
+import com.example.alexy.redesocial.utils.Formatter;
 
 import java.util.List;
 
@@ -68,39 +69,33 @@ public class PerfilFragment extends Fragment {
 
     private void popularFeed(Historia h){
         //Configurar like e dislike, utilizar h.deulike para saber se o usuario deu like na historia e tratar devidamene
-        CardView cardView;
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
-        if(h.foto != null) {
-            cardView = (CardView) layoutInflater.inflate(R.layout.feed_principal_card_com_foto, feed,false);
-            TextView nome = (TextView) cardView.findViewById(R.id.publicacaoNome);
-            TextView data = (TextView) cardView.findViewById(R.id.publicacaoDataHora);
-            TextView mensagem = (TextView) cardView.findViewById(R.id.publicacaoTexto);
-            TextView likes = (TextView) cardView.findViewById(R.id.publicacaoLikeCounter);
-            TextView dislikes = (TextView) cardView.findViewById(R.id.publicacaoDislikeCounter);
-            ImageView foto = (ImageView) cardView.findViewById(R.id.publicacaoFoto);
+        int layout = h.foto != null ? R.layout.feed_principal_card_com_foto : R.layout.feed_principal_card_sem_foto;
 
-            nome.setText(h.getUsername());
-            data.setText(h.getData());
-            mensagem.setText(h.getMensagem());
-            likes.setText(String.valueOf(h.getLikes()));
-            dislikes.setText(String.valueOf(h.getDislikes()));
-            foto.setImageBitmap(ConversorBase64.b64tobitmap(h.foto));
-        } else {
-            cardView = (CardView) layoutInflater.inflate(R.layout.feed_principal_card_sem_foto, feed,false);
-            TextView nome = (TextView) cardView.findViewById(R.id.publicacaoNome);
-            TextView data = (TextView) cardView.findViewById(R.id.publicacaoDataHora);
-            TextView mensagem = (TextView) cardView.findViewById(R.id.publicacaoTexto);
-            TextView likes = (TextView) cardView.findViewById(R.id.publicacaoLikeCounter);
-            TextView dislikes = (TextView) cardView.findViewById(R.id.publicacaoDislikeCounter);
+        CardView cardView = (CardView) layoutInflater.inflate(layout, feed,false);
+        TextView nome = (TextView) cardView.findViewById(R.id.publicacaoNome);
+        TextView data = (TextView) cardView.findViewById(R.id.publicacaoDataHora);
+        TextView mensagem = (TextView) cardView.findViewById(R.id.publicacaoTexto);
+        TextView likes = (TextView) cardView.findViewById(R.id.publicacaoLikeCounter);
+        TextView dislikes = (TextView) cardView.findViewById(R.id.publicacaoDislikeCounter);
 
-            nome.setText(h.getUsername());
-            data.setText(h.getData());
-            mensagem.setText(h.getMensagem());
-            likes.setText(String.valueOf(h.getLikes()));
-            dislikes.setText(String.valueOf(h.getDislikes()));
+        String date;
+        try {
+            date = Formatter.date(h.getData());
+        } catch (Exception e) {
+            e.printStackTrace();
+            date = "";
         }
 
-
+        nome.setText(h.getUsername());
+        data.setText(date);
+        mensagem.setText(h.getMensagem());
+        likes.setText(String.valueOf(h.getLikes()));
+        dislikes.setText(String.valueOf(h.getDislikes()));
+        if(h.foto != null) {
+            ImageView foto = cardView.findViewById(R.id.publicacaoFoto);
+            foto.setImageBitmap(ConversorBase64.b64tobitmap(h.foto));
+        }
 
         feed.addView(cardView);
     }
