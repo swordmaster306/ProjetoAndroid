@@ -85,15 +85,27 @@
             android:id="@+id/publicacaoDislikeButton"
             android:layout_width="77dp"
             android:layout_height="45dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginStart="156dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="D"
+            android:text="Dislike"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/publicacaoLikeButton"
             app:layout_constraintTop_toBottomOf="@+id/publicacaoTexto"
             tools:text="Dislike" />
+
+        <Button
+            android:id="@+id/deleteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Deletar "
+            app:layout_constraintEnd_toStartOf="@+id/publicacaoDataHora"
+            app:layout_constraintStart_toEndOf="@+id/publicacaoNome"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 
