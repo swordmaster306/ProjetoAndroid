@@ -48,11 +48,13 @@ public class FeedPrincipalFragment extends Fragment {
         feed = v.findViewById(R.id.container);
 
 
-        Call<List<Historia>> getFeedApi = RetrofitSingleton.getInstance().redesocialapi.getPerfilHistorias(RetrofitSingleton.getInstance().token.userid);
+        Call<List<Historia>> getFeedApi = RetrofitSingleton.getInstance().redesocialapi.getFeedPrincipal(RetrofitSingleton.getInstance().token.userid);
         Callback<List<Historia>> callbackFeed =  new Callback<List<Historia>>() {
             @Override
             public void onResponse(Call<List<Historia>> call, Response<List<Historia>> response) {
                 List<Historia> historiasAmigos = response.body();
+                Toast.makeText(getActivity(), String.valueOf(historiasAmigos.size()), Toast.LENGTH_SHORT).show();
+
                 for (Historia h : historiasAmigos)
                 {
                     popularFeed(h);
@@ -72,7 +74,6 @@ public class FeedPrincipalFragment extends Fragment {
 
 
     private void popularFeed(Historia h){
-        //Configurar like e dislike, utilizar h.deulike para saber se o usuario deu like na historia e tratar devidamene
         final Historia historia = h;
         CardView cardView;
         if(historia.foto != null){
@@ -89,6 +90,7 @@ public class FeedPrincipalFragment extends Fragment {
 
             if(historia.userId != RetrofitSingleton.getInstance().token.userid){
                 deletarButton.setVisibility(View.GONE);
+            }else{
                 deletarButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -98,19 +100,17 @@ public class FeedPrincipalFragment extends Fragment {
                         Callback<Void> deletarHistoriaCallback = new Callback<Void>() {
                             @Override
                             public void onResponse(Call<Void> call, Response<Void> response) {
-
+                                Toast.makeText(getActivity(), "Deletado", Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
                             public void onFailure(Call<Void> call, Throwable t) {
-
+                                Toast.makeText(getActivity(), "Nao deletado", Toast.LENGTH_SHORT).show();
                             }
                         };
                         deletarHistoriaCall.enqueue(deletarHistoriaCallback);
                     }
                 });
-            }else{
-
             }
 
             switch(historia.deulike){
@@ -204,6 +204,7 @@ public class FeedPrincipalFragment extends Fragment {
             }
             if(historia.userId != RetrofitSingleton.getInstance().token.userid){
                 deletarButton.setVisibility(View.GONE);
+            }else{
                 deletarButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -213,12 +214,12 @@ public class FeedPrincipalFragment extends Fragment {
                         Callback<Void> deletarHistoriaCallback = new Callback<Void>() {
                             @Override
                             public void onResponse(Call<Void> call, Response<Void> response) {
-
+                                Toast.makeText(getActivity(), "Deletado", Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
                             public void onFailure(Call<Void> call, Throwable t) {
-
+                                Toast.makeText(getActivity(), "Nao deletado", Toast.LENGTH_SHORT).show();
                             }
                         };
                         deletarHistoriaCall.enqueue(deletarHistoriaCallback);

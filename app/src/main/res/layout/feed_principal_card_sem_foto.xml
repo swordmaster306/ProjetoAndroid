@@ -96,12 +96,12 @@
             tools:text="Dislike" />
 
         <Button
-            android:id="@+id/deleteButton"
+            android:id="@+id/deletarButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
             android:text="Deletar "
             app:layout_constraintEnd_toStartOf="@+id/publicacaoDataHora"
             app:layout_constraintStart_toEndOf="@+id/publicacaoNome"
