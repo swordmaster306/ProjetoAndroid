@@ -10,6 +10,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 
@@ -41,6 +42,6 @@ public interface RedeSocialService {
     @POST("api/addremove/likedislike")
     Call<Void> darlikedislike(@Body LikeDislike ld);
 
-    @DELETE("api/addremove/deletarhistoria")
+    @HTTP(method = "DELETE", path = "api/addremove/deletarhistoria", hasBody = true)
     Call<Void> deletarHistoria(@Body Historia historia);
 }

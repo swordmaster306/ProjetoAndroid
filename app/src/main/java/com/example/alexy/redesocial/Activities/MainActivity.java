@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.SearchView;
 
 import com.example.alexy.redesocial.Fragments.BuscaFragment;
 import com.example.alexy.redesocial.Fragments.FeedPrincipalFragment;
@@ -23,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private ActionBarDrawerToggle actionBarDrawerToggle;
-    BuscaFragment buscafrag = new BuscaFragment();
     private FloatingActionButton publishFab;
 
     @Override
@@ -112,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.botao_busca:
                 //deve mostrar caixa de busca , quando o usuario digitar o texto e dar enter, executar comando abaixo com putextra do text
+                BuscaFragment buscafrag = new BuscaFragment();
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,buscafrag).commit();
                 return true;
         }
@@ -125,6 +126,24 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Carrega o menu
         getMenuInflater().inflate(R.menu.main, menu);
+        SearchView busca = (SearchView) menu.findItem(R.id.botao_busca).getActionView();
+
+        busca.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Bundle bundle = new Bundle();
+                bundle.putString("busca", query);
+                BuscaFragment buscafrag = new BuscaFragment();
+                buscafrag.setArguments(bundle);
+                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,buscafrag).commit();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
         return true;
     }
 
