@@ -29,6 +29,7 @@ public class PerfilFragment extends Fragment {
 
 
     private ViewGroup feed;
+    RetrofitSingleton retrofit;
 
     public PerfilFragment() {
         // Required empty public constructor
@@ -39,18 +40,18 @@ public class PerfilFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View v = inflater.inflate(R.layout.fragment_perfil, container, false);
+        View v = getActivity().getLayoutInflater().inflate(R.layout.fragment_perfil, container, false);
 
-        feed = v.findViewById(R.id.container2);
+        feed = v.findViewById(R.id.container_perfil);
+        retrofit = RetrofitSingleton.getInstance();
 
-        Call<List<Historia>> getFeedApi = RetrofitSingleton.getInstance().redesocialapi.getPerfilHistorias(RetrofitSingleton.getInstance().token.userid);
+        Call<List<Historia>> getFeedApi = retrofit.redesocialapi.getPerfilHistorias(RetrofitSingleton.getInstance().token.userid);
         Callback<List<Historia>> callbackFeed =  new Callback<List<Historia>>() {
             @Override
             public void onResponse(Call<List<Historia>> call, Response<List<Historia>> response) {
                 List<Historia> historias = response.body();
-                for (Historia h : historias)
-                {
-                    popularFeed(h);
+                for (Historia hist: historias) {
+                    popularFeed(hist);
                 }
             }
 
@@ -65,12 +66,12 @@ public class PerfilFragment extends Fragment {
     }
 
 
-
     private void popularFeed(Historia h){
         //Configurar like e dislike, utilizar h.deulike para saber se o usuario deu like na historia e tratar devidamene
         CardView cardView;
-        if(h.foto != null){
-            cardView = (CardView) getActivity().getLayoutInflater().inflate(R.layout.feed_principal_card_com_foto,feed,false);
+        LayoutInflater layoutInflater = getActivity().getLayoutInflater();
+        if(h.foto != null) {
+            cardView = (CardView) layoutInflater.inflate(R.layout.feed_principal_card_com_foto, feed,false);
             TextView nome = (TextView) cardView.findViewById(R.id.publicacaoNome);
             TextView data = (TextView) cardView.findViewById(R.id.publicacaoDataHora);
             TextView mensagem = (TextView) cardView.findViewById(R.id.publicacaoTexto);
@@ -84,8 +85,8 @@ public class PerfilFragment extends Fragment {
             likes.setText(String.valueOf(h.getLikes()));
             dislikes.setText(String.valueOf(h.getDislikes()));
             foto.setImageBitmap(ConversorBase64.b64tobitmap(h.foto));
-        }else{
-            cardView = (CardView) getActivity().getLayoutInflater().inflate(R.layout.feed_principal_card_sem_foto,feed,false);
+        } else {
+            cardView = (CardView) layoutInflater.inflate(R.layout.feed_principal_card_sem_foto, feed,false);
             TextView nome = (TextView) cardView.findViewById(R.id.publicacaoNome);
             TextView data = (TextView) cardView.findViewById(R.id.publicacaoDataHora);
             TextView mensagem = (TextView) cardView.findViewById(R.id.publicacaoTexto);
