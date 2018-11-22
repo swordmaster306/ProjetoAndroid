@@ -1,6 +1,8 @@
 package com.example.alexy.redesocial.Fragments;
 
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
@@ -18,6 +20,7 @@ import com.example.alexy.redesocial.models.Historia;
 import com.example.alexy.redesocial.models.LikeDislike;
 import com.example.alexy.redesocial.utils.ConversorBase64;
 import com.example.alexy.redesocial.utils.Formatter;
+import com.example.alexy.redesocial.utils.Status;
 
 import java.util.List;
 
@@ -82,8 +85,8 @@ public class FeedPrincipalFragment extends Fragment {
         TextView mensagem = (TextView) cardView.findViewById(R.id.publicacaoTexto);
         final TextView likes = (TextView) cardView.findViewById(R.id.publicacaoLikeCounter);
         final TextView dislikes = (TextView) cardView.findViewById(R.id.publicacaoDislikeCounter);
-        final Button likeButton = (Button) cardView.findViewById(R.id.publicacaoLikeButton);
-        final Button dislikeButton = (Button) cardView.findViewById(R.id.publicacaoDislikeButton);
+        final ImageView likeButton = cardView.findViewById(R.id.likeButton);
+        final ImageView dislikeButton = cardView.findViewById(R.id.dislikeButton);
         final Button deletarButton = (Button) cardView.findViewById(R.id.deletarButton);
 
         if(historia.userId != RetrofitSingleton.getInstance().token.userid){
@@ -126,8 +129,10 @@ public class FeedPrincipalFragment extends Fragment {
                         Toast.makeText(getActivity(), "Like realizado com sucesso", Toast.LENGTH_SHORT).show();
                         if(!dislikeButton.isEnabled()) {
                             dislikeButton.setEnabled(true);
+                            dislikeButton.clearColorFilter();
                         }
                         likeButton.setEnabled(false);
+                        likeButton.setColorFilter(Color.BLUE, PorterDuff.Mode.SRC_IN);
                         likes.setText(String.valueOf(Integer.valueOf(likes.getText().toString()) +1));
                         dislikes.setText(String.valueOf(Integer.valueOf(dislikes.getText().toString())-1));
                     }
@@ -154,8 +159,10 @@ public class FeedPrincipalFragment extends Fragment {
                         Toast.makeText(getActivity(), "Dislike realizado com sucesso", Toast.LENGTH_SHORT).show();
                         if(!likeButton.isEnabled()) {
                             likeButton.setEnabled(true);
+                            likeButton.clearColorFilter();
                         }
                         dislikeButton.setEnabled(false);
+                        dislikeButton.setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
                         likes.setText(String.valueOf(Integer.valueOf(likes.getText().toString()) -1));
                         dislikes.setText(String.valueOf(Integer.valueOf(dislikes.getText().toString())+1));
                     }
@@ -170,11 +177,13 @@ public class FeedPrincipalFragment extends Fragment {
         });
 
         switch(historia.deulike){
-            case 1:
+            case Status.LIKED:
                 likeButton.setEnabled(false);
+                likeButton.setColorFilter(Color.BLUE, PorterDuff.Mode.SRC_IN);
                 break;
-            case 2:
+            case Status.DISLIKED:
                 dislikeButton.setEnabled(false);
+                dislikeButton.setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
                 break;
         }
 

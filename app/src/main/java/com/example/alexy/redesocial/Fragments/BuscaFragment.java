@@ -41,11 +41,13 @@ public class BuscaFragment extends Fragment {
 
         busca = v.findViewById(R.id.container2);
 
-        Call<List<User>> retornoBusca = RetrofitSingleton.getInstance().redesocialapi.buscarAmigos("A");
+        String texto_busca = getArguments().getString("busca");
+        System.out.println(texto_busca);
+        Call<List<User>> retornoBusca = RetrofitSingleton.getInstance().redesocialapi.buscarAmigos(texto_busca);
         Callback<List<User>> callbackBusca = new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                Toast.makeText(getActivity(), String.valueOf(response.body().size()), Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), String.valueOf(response.body().size()), Toast.LENGTH_SHORT).show();
                 List<User> resultado = response.body();
                 for(User u : resultado){
                     cardbusca(u);
