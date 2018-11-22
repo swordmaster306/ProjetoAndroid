@@ -8,6 +8,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -39,4 +40,7 @@ public interface RedeSocialService {
 
     @POST("api/addremove/likedislike")
     Call<Void> darlikedislike(@Body LikeDislike ld);
+
+    @DELETE("api/addremove/deletarhistoria")
+    Call<Void> deletarHistoria(@Body Historia historia);
 }

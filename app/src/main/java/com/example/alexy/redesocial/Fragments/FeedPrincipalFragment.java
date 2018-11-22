@@ -80,11 +80,39 @@ public class FeedPrincipalFragment extends Fragment {
             TextView nome = (TextView) cardView.findViewById(R.id.publicacaoNome);
             TextView data = (TextView) cardView.findViewById(R.id.publicacaoDataHora);
             TextView mensagem = (TextView) cardView.findViewById(R.id.publicacaoTexto);
-            TextView likes = (TextView) cardView.findViewById(R.id.publicacaoLikeCounter);
-            TextView dislikes = (TextView) cardView.findViewById(R.id.publicacaoDislikeCounter);
+            final TextView likes = (TextView) cardView.findViewById(R.id.publicacaoLikeCounter);
+            final TextView dislikes = (TextView) cardView.findViewById(R.id.publicacaoDislikeCounter);
             ImageView foto = (ImageView) cardView.findViewById(R.id.publicacaoFoto);
             final Button likeButton = (Button) cardView.findViewById(R.id.publicacaoLikeButton);
             final Button dislikeButton = (Button) cardView.findViewById(R.id.publicacaoDislikeButton);
+            final Button deletarButton = (Button) cardView.findViewById(R.id.deletarButton);
+
+            if(historia.userId != RetrofitSingleton.getInstance().token.userid){
+                deletarButton.setVisibility(View.GONE);
+                deletarButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Historia hist = new Historia();
+                        hist.id = historia.id;
+                        Call<Void> deletarHistoriaCall = RetrofitSingleton.getInstance().redesocialapi.deletarHistoria(hist);
+                        Callback<Void> deletarHistoriaCallback = new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+
+                            }
+                        };
+                        deletarHistoriaCall.enqueue(deletarHistoriaCallback);
+                    }
+                });
+            }else{
+
+            }
+
             switch(historia.deulike){
                 case 1:
                     likeButton.setEnabled(false);
@@ -109,83 +137,8 @@ public class FeedPrincipalFragment extends Fragment {
                                 dislikeButton.setEnabled(true);
                             }
                             likeButton.setEnabled(false);
-                        }
-
-                        @Override
-                        public void onFailure(Call<Void> call, Throwable t) {
-                            Toast.makeText(getActivity(), "Erro no like", Toast.LENGTH_SHORT).show();
-                        }
-                    };
-                    likeCall.enqueue(likeCallback);
-                }
-            });
-            dislikeButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    LikeDislike ld = new LikeDislike();
-                    ld.historiaid = historia.id;
-                    ld.userid = RetrofitSingleton.getInstance().token.userid;
-                    ld.likedislike = 0;
-                    Call<Void> dislikeCall = RetrofitSingleton.getInstance().redesocialapi.darlikedislike(ld);
-                    Callback<Void> likeCallback = new Callback<Void>() {
-                        @Override
-                        public void onResponse(Call<Void> call, Response<Void> response) {
-                            Toast.makeText(getActivity(), "Dislike realizado com sucesso", Toast.LENGTH_SHORT).show();
-                            if(!likeButton.isEnabled()) {
-                                likeButton.setEnabled(true);
-                            }
-                            //dislikeButton.setEnabled(false);
-                        }
-
-                        @Override
-                        public void onFailure(Call<Void> call, Throwable t) {
-                            Toast.makeText(getActivity(), "Erro no dislike", Toast.LENGTH_SHORT).show();
-                        }
-                    };
-                    dislikeCall.enqueue(likeCallback);
-                }
-            });
-
-            nome.setText(historia.getUsername());
-            data.setText(String.valueOf(historia.deulike));
-            mensagem.setText(historia.getMensagem());
-            likes.setText(String.valueOf(h.getLikes()));
-            dislikes.setText(String.valueOf(h.getDislikes()));
-            foto.setImageBitmap(ConversorBase64.b64tobitmap(h.foto));
-        }else{
-            cardView = (CardView) getActivity().getLayoutInflater().inflate(R.layout.feed_principal_card_sem_foto,feed,false);
-            TextView nome = (TextView) cardView.findViewById(R.id.publicacaoNome);
-            TextView data = (TextView) cardView.findViewById(R.id.publicacaoDataHora);
-            TextView mensagem = (TextView) cardView.findViewById(R.id.publicacaoTexto);
-            TextView likes = (TextView) cardView.findViewById(R.id.publicacaoLikeCounter);
-            TextView dislikes = (TextView) cardView.findViewById(R.id.publicacaoDislikeCounter);
-            final Button likeButton = (Button) cardView.findViewById(R.id.publicacaoLikeButton);
-            final Button dislikeButton = (Button) cardView.findViewById(R.id.publicacaoDislikeButton);
-            switch(historia.deulike){
-                case 1:
-                    likeButton.setEnabled(false);
-                    break;
-                case 2:
-                    dislikeButton.setEnabled(false);
-                    break;
-            }
-
-            likeButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    LikeDislike ld = new LikeDislike();
-                    ld.historiaid = historia.id;
-                    ld.userid = RetrofitSingleton.getInstance().token.userid;
-                    ld.likedislike = 1;
-                    Call<Void> likeCall = RetrofitSingleton.getInstance().redesocialapi.darlikedislike(ld);
-                    Callback<Void> likeCallback = new Callback<Void>() {
-                        @Override
-                        public void onResponse(Call<Void> call, Response<Void> response) {
-                            Toast.makeText(getActivity(), "Like realizado com sucesso", Toast.LENGTH_SHORT).show();
-                            if(!dislikeButton.isEnabled()) {
-                                dislikeButton.setEnabled(true);
-                            }
-                            likeButton.setEnabled(false);
+                            likes.setText(String.valueOf(Integer.valueOf(likes.getText().toString()) +1));
+                            dislikes.setText(String.valueOf(Integer.valueOf(dislikes.getText().toString())-1));
                         }
 
                         @Override
@@ -212,6 +165,113 @@ public class FeedPrincipalFragment extends Fragment {
                                 likeButton.setEnabled(true);
                             }
                             dislikeButton.setEnabled(false);
+                            likes.setText(String.valueOf(Integer.valueOf(likes.getText().toString()) -1));
+                            dislikes.setText(String.valueOf(Integer.valueOf(dislikes.getText().toString())+1));
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Toast.makeText(getActivity(), "Erro no dislike", Toast.LENGTH_SHORT).show();
+                        }
+                    };
+                    dislikeCall.enqueue(likeCallback);
+                }
+            });
+
+            nome.setText(historia.getUsername());
+            data.setText(String.valueOf(historia.deulike));
+            mensagem.setText(historia.getMensagem());
+            likes.setText(String.valueOf(h.getLikes()));
+            dislikes.setText(String.valueOf(h.getDislikes()));
+            foto.setImageBitmap(ConversorBase64.b64tobitmap(h.foto));
+        }else{
+            cardView = (CardView) getActivity().getLayoutInflater().inflate(R.layout.feed_principal_card_sem_foto,feed,false);
+            TextView nome = (TextView) cardView.findViewById(R.id.publicacaoNome);
+            TextView data = (TextView) cardView.findViewById(R.id.publicacaoDataHora);
+            TextView mensagem = (TextView) cardView.findViewById(R.id.publicacaoTexto);
+            final TextView likes = (TextView) cardView.findViewById(R.id.publicacaoLikeCounter);
+            final TextView dislikes = (TextView) cardView.findViewById(R.id.publicacaoDislikeCounter);
+            final Button likeButton = (Button) cardView.findViewById(R.id.publicacaoLikeButton);
+            final Button dislikeButton = (Button) cardView.findViewById(R.id.publicacaoDislikeButton);
+            final Button deletarButton = (Button) cardView.findViewById(R.id.deletarButton);
+            switch(historia.deulike){
+                case 1:
+                    likeButton.setEnabled(false);
+                    break;
+                case 2:
+                    dislikeButton.setEnabled(false);
+                    break;
+            }
+            if(historia.userId != RetrofitSingleton.getInstance().token.userid){
+                deletarButton.setVisibility(View.GONE);
+                deletarButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Historia hist = new Historia();
+                        hist.id = historia.id;
+                        Call<Void> deletarHistoriaCall = RetrofitSingleton.getInstance().redesocialapi.deletarHistoria(hist);
+                        Callback<Void> deletarHistoriaCallback = new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+
+                            }
+                        };
+                        deletarHistoriaCall.enqueue(deletarHistoriaCallback);
+                    }
+                });
+            }
+
+            likeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LikeDislike ld = new LikeDislike();
+                    ld.historiaid = historia.id;
+                    ld.userid = RetrofitSingleton.getInstance().token.userid;
+                    ld.likedislike = 1;
+                    Call<Void> likeCall = RetrofitSingleton.getInstance().redesocialapi.darlikedislike(ld);
+                    Callback<Void> likeCallback = new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            Toast.makeText(getActivity(), "Like realizado com sucesso", Toast.LENGTH_SHORT).show();
+                            if(!dislikeButton.isEnabled()) {
+                                dislikeButton.setEnabled(true);
+                            }
+                            likeButton.setEnabled(false);
+                            likes.setText(String.valueOf(Integer.valueOf(likes.getText().toString()) +1));
+                            dislikes.setText(String.valueOf(Integer.valueOf(dislikes.getText().toString())-1));
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Toast.makeText(getActivity(), "Erro no like", Toast.LENGTH_SHORT).show();
+                        }
+                    };
+                    likeCall.enqueue(likeCallback);
+                }
+            });
+            dislikeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    LikeDislike ld = new LikeDislike();
+                    ld.historiaid = historia.id;
+                    ld.userid = RetrofitSingleton.getInstance().token.userid;
+                    ld.likedislike = 0;
+                    Call<Void> dislikeCall = RetrofitSingleton.getInstance().redesocialapi.darlikedislike(ld);
+                    Callback<Void> likeCallback = new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            Toast.makeText(getActivity(), "Dislike realizado com sucesso", Toast.LENGTH_SHORT).show();
+                            if(!likeButton.isEnabled()) {
+                                likeButton.setEnabled(true);
+                            }
+                            dislikeButton.setEnabled(false);
+                            likes.setText(String.valueOf(Integer.valueOf(likes.getText().toString()) -1));
+                            dislikes.setText(String.valueOf(Integer.valueOf(dislikes.getText().toString())+1));
                         }
 
                         @Override
