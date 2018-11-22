@@ -1,5 +1,6 @@
 package com.example.alexy.redesocial.models;
 
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class Historia {
@@ -24,7 +25,7 @@ public class Historia {
     public String data;
 
     public String getData() {
-        return data;
+        return this.data;
     }
 
     public void setData(String data) {

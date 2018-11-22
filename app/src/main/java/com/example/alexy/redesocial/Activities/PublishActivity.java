@@ -5,8 +5,11 @@ import android.graphics.Bitmap;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,6 +29,8 @@ public class PublishActivity extends AppCompatActivity {
 
     private ImageButton btnCamera;
     private ImageView imageView;
+    private EditText editText;
+    private Button btnPublish;
     // private TextView textView;
 
     private String fotoB64;
@@ -37,8 +42,9 @@ public class PublishActivity extends AppCompatActivity {
         setContentView(R.layout.activity_publish);
 
         btnCamera = (ImageButton) findViewById(R.id.btnCamera);
+        btnPublish = (Button) findViewById(R.id.btnPublish);
         imageView = (ImageView) findViewById(R.id.imageView);
-        //textView = (TextView) findViewById(R.id.textView);
+        editText = (EditText) findViewById(R.id.editText);
 
         btnCamera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,6 +54,13 @@ public class PublishActivity extends AppCompatActivity {
                 if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
                     startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
                 }
+            }
+        });
+
+        btnPublish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                criarHistoria(editText.getText().toString());
             }
         });
     }
@@ -65,11 +78,10 @@ public class PublishActivity extends AppCompatActivity {
 
 
     //Chamar esse método ao confirmar a postagem da história
-    public void criarHistoria(){
+    public void criarHistoria(String mesage){
         Historia hist = new Historia();
         hist.userId = RetrofitSingleton.getInstance().token.userid;
-        //Daniel, substitua essa mensagem cravada pela mensagem que o usuario vai digitar
-        hist.mensagem = "Test de historia via android";
+        hist.mensagem = mesage;
         if(fotoB64 != null)
             hist.foto = fotoB64;
 
@@ -78,6 +90,7 @@ public class PublishActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 Toast.makeText(PublishActivity.this, "História criada com sucesso", Toast.LENGTH_SHORT).show();
+                finish();
             }
 
             @Override
@@ -86,5 +99,20 @@ public class PublishActivity extends AppCompatActivity {
             }
         };
         criarhistoria.enqueue(callbackCriarHistoria);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.botao_sair) {
+                finish();
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Carrega o menu
+        getMenuInflater().inflate(R.menu.close_activity, menu);
+        return true;
     }
 }
