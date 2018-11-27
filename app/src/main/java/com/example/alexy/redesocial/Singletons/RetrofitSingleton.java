@@ -17,7 +17,7 @@ public class RetrofitSingleton {
 
     private RetrofitSingleton(){
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://189.121.26.170:5000/")
+                .baseUrl("http://ec2-18-228-227-199.sa-east-1.compute.amazonaws.com:5001/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         redesocialapi = retrofit.create(RedeSocialService.class);
