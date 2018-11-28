@@ -3,6 +3,7 @@ package com.example.alexy.redesocial.Fragments;
 
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
@@ -69,7 +70,6 @@ public class FeedPrincipalFragment extends Fragment {
             }
         };
         getFeedApi.enqueue(callbackFeed);
-
         return v;
     }
 
@@ -205,6 +205,13 @@ public class FeedPrincipalFragment extends Fragment {
             foto.setImageBitmap(ConversorBase64.b64tobitmap(historia.foto));
         }
         feed.addView(cardView);
+        this.animation.stop();
+    }
+
+    AnimationDrawable animation;
+    public void setAnimation(AnimationDrawable animation)
+    {
+        this.animation = animation;
     }
 
 }

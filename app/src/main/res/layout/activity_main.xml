@@ -10,6 +10,12 @@
         android:layout_height="match_parent"
         android:id="@+id/content_frame">
 
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/loading" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fabEdit"
@@ -34,6 +40,8 @@
         android:divider="@android:color/background_dark"
         app:headerLayout="@layout/cabecalho_menu"
         app:menu="@menu/itens_menu"
-        android:id="@+id/navigation_view"/>
+        android:id="@+id/navigation_view">
+
+    </android.support.design.widget.NavigationView>
 
 </android.support.v4.widget.DrawerLayout>

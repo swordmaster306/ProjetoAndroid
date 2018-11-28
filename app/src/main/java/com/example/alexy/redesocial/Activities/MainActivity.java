@@ -1,5 +1,6 @@
 package com.example.alexy.redesocial.Activities;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -10,6 +11,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.widget.ImageView;
 import android.widget.SearchView;
 
 import com.example.alexy.redesocial.Fragments.BuscaFragment;
@@ -25,13 +28,19 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private FloatingActionButton publishFab;
+    private AnimationDrawable animation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        ImageView loading = (ImageView)findViewById(R.id.imageView);
+        animation = (AnimationDrawable)loading.getDrawable();
+        animation.start();
+
         FeedPrincipalFragment frag = new FeedPrincipalFragment();
+        frag.setAnimation(animation);
         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,frag).commit();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -105,6 +114,14 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
+    }
+
+    @Override
+    public void onRestart()
+    {
+        super.onRestart();
+        finish();
+        startActivity(getIntent());
     }
 
     @Override
