@@ -30,6 +30,11 @@ public interface RedeSocialService {
     @GET("api/feed/meusamigos/{id}")
     Call<List<User>> getMeusAmigos(@Path("id") int id);
 
+
+
+    @GET("api/feed/perfil/{id}")
+    Call<User> getPerfil(@Path("id") int id);
+
     @GET("api/feed/buscaramigos/{nome}")
     Call<List<User>> buscarAmigos(@Path("nome") String nome);
 
@@ -44,4 +49,26 @@ public interface RedeSocialService {
 
     @HTTP(method = "DELETE", path = "api/addremove/deletarhistoria", hasBody = true)
     Call<Void> deletarHistoria(@Body Historia historia);
+
+
+
+    @GET("api/feed/amizadespendentes/{id}")
+    Call<List<User>> getAmizadesPendentes(@Path("id") int id);
+
+    @GET("api/feed/statusAmizade/{id1}/{id2}")
+    Call<Amizade> getstatusAmizade(@Path("id1") int id1,@Path("id2") int id2);
+
+    @POST("api/addremove/aceitaramizade/{id1}/{id2}")
+    Call<Void> aceitaramizade(@Path("id1") int id1,@Path("id2") int id2);
+
+    @POST("api/addremove/rejeitaramizade/{id1}/{id2}")
+    Call<Void> rejeitaramizade(@Path("id1") int id1,@Path("id2") int id2);
+
+    @POST("api/addremove/adicionaramigo/{id1}/{id2}")
+    Call<Void> adicionaramigo(@Path("id1") int id1,@Path("id2") int id2);
+
+    @POST("api/addremove/deletaramigo/{id1}/{id2}")
+    Call<Void> deletaramigo(@Path("id1") int id1,@Path("id2") int id2);
+
+
 }

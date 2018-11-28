@@ -70,6 +70,8 @@ public class LoginActivity extends AppCompatActivity {
                     if(token.authenticated) {
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
+                        loginButton.setEnabled(true);
+                        loginButton.setText("Entrar");
                     }else{
                         Toast.makeText(LoginActivity.this, "Usuário não cadastrado", Toast.LENGTH_SHORT).show();
                         loginButton.setEnabled(true);

@@ -6,11 +6,14 @@ import android.graphics.PorterDuff;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,9 +22,12 @@ import com.example.alexy.redesocial.R;
 import com.example.alexy.redesocial.Singletons.RetrofitSingleton;
 import com.example.alexy.redesocial.models.Historia;
 import com.example.alexy.redesocial.models.LikeDislike;
+import com.example.alexy.redesocial.models.User;
 import com.example.alexy.redesocial.utils.ConversorBase64;
 import com.example.alexy.redesocial.utils.Formatter;
 import com.example.alexy.redesocial.utils.Status;
+
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -34,9 +40,18 @@ import retrofit2.Response;
  */
 public class PerfilFragment extends Fragment {
 
-
+    private int userid;
+    public int status;
+    public User user;
     private ViewGroup feed;
+    private ImageView fotoPerfil;
+    private TextView nomePerfil;
     RetrofitSingleton retrofit;
+
+
+    private Button editarPerfilButton;
+    private ImageButton addDeleteButton;
+
 
     public PerfilFragment() {
         // Required empty public constructor
@@ -47,12 +62,44 @@ public class PerfilFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+
+
         View v = getActivity().getLayoutInflater().inflate(R.layout.fragment_perfil, container, false);
 
+
+        editarPerfilButton = v.findViewById(R.id.editarPerfilButton);
+        if(RetrofitSingleton.getInstance().token.userid != user.userId){
+            editarPerfilButton.setVisibility(View.GONE);
+        }
+
+        addDeleteButton = v.findViewById(R.id.addDeleteButton);
+
+
+        if(status == 1){//nao eh amigo
+            addDeleteButton.setImageResource(R.drawable.);
+        }else if(status == 2){//eh amigo
+
+        }else{//eh voce
+            addDeleteButton.setVisibility(View.GONE);
+        }
+
+
+
         feed = v.findViewById(R.id.container_perfil);
+        fotoPerfil = v.findViewById(R.id.fotoPerfil);
+        nomePerfil = v.findViewById(R.id.nomePerfil);
+
+        if(user.getFotoPerfil() != null){
+            fotoPerfil.setImageBitmap(ConversorBase64.b64tobitmap(user.getFotoPerfil()));
+        }
+        nomePerfil.setText(user.getNome());
+
+
         retrofit = RetrofitSingleton.getInstance();
 
-        Call<List<Historia>> getFeedApi = retrofit.redesocialapi.getPerfilHistorias(RetrofitSingleton.getInstance().token.userid);
+
+
+        Call<List<Historia>> getFeedApi = retrofit.redesocialapi.getPerfilHistorias(user.userId);
         Callback<List<Historia>> callbackFeed =  new Callback<List<Historia>>() {
             @Override
             public void onResponse(Call<List<Historia>> call, Response<List<Historia>> response) {
@@ -87,6 +134,37 @@ public class PerfilFragment extends Fragment {
 
         final ImageView likeButton = cardView.findViewById(R.id.likeButton);
         final ImageView dislikeButton = cardView.findViewById(R.id.dislikeButton);
+
+        final Button deletarButton = (Button) cardView.findViewById(R.id.deletarButton);
+
+
+
+
+        if(h.userId != RetrofitSingleton.getInstance().token.userid){
+            deletarButton.setVisibility(View.GONE);
+        }else{
+            deletarButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Historia hist = new Historia();
+                    hist.id = h.id;
+                    Call<Void> deletarHistoriaCall = RetrofitSingleton.getInstance().redesocialapi.deletarHistoria(hist);
+                    Callback<Void> deletarHistoriaCallback = new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            ((ViewGroup)deletarButton.getParent().getParent()).removeView((ViewGroup)deletarButton.getParent());
+                            Toast.makeText(getActivity(), "História deletada", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Toast.makeText(getActivity(), "Erro na requisição de delete de história", Toast.LENGTH_SHORT).show();
+                        }
+                    };
+                    deletarHistoriaCall.enqueue(deletarHistoriaCallback);
+                }
+            });
+        }
 
         likeButton.setOnClickListener(new View.OnClickListener() {
             @Override

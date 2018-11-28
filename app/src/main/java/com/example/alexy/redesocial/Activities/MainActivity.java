@@ -11,13 +11,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.SearchView;
+import android.widget.Toast;
 
+import com.example.alexy.redesocial.Fragments.AmizadesPendentesFragment;
 import com.example.alexy.redesocial.Fragments.BuscaFragment;
 import com.example.alexy.redesocial.Fragments.FeedPrincipalFragment;
 import com.example.alexy.redesocial.Fragments.MeusAmigosFragment;
 import com.example.alexy.redesocial.Fragments.PerfilFragment;
 import com.example.alexy.redesocial.Fragments.SobreFragment;
 import com.example.alexy.redesocial.R;
+import com.example.alexy.redesocial.Singletons.RetrofitSingleton;
+import com.example.alexy.redesocial.models.User;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -72,12 +80,29 @@ public class MainActivity extends AppCompatActivity {
                         return true;
                     case R.id.meu_perfil:
                         //Carregar fragment de perfil
-                        PerfilFragment perfilFragment = new PerfilFragment();
-                        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, perfilFragment).commit();
+                        final PerfilFragment perfilFragment = new PerfilFragment();
+                        Call<User> getPerfil = RetrofitSingleton.getInstance().redesocialapi.getPerfil(RetrofitSingleton.getInstance().token.userid);
+                        getPerfil.enqueue(new Callback<User>() {
+                            @Override
+                            public void onResponse(Call<User> call, Response<User> response) {
+                                User u = response.body();
+                                perfilFragment.user = u;
+                                getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, perfilFragment).commit();
+                            }
+
+                            @Override
+                            public void onFailure(Call<User> call, Throwable t) {
+                                Toast.makeText(MainActivity.this, "Erro na requisição de perfil", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                         return true;
                     case R.id.amigos:
                         MeusAmigosFragment meusAmigosFragment = new MeusAmigosFragment();
                         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,meusAmigosFragment).commit();
+                        return true;
+                    case R.id.amizadesPendentes:
+                        AmizadesPendentesFragment amizadesPendentesFragment = new AmizadesPendentesFragment();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,amizadesPendentesFragment).commit();
                         return true;
                     case R.id.configuracoes:
                         //Carregar possiveis configuracoes

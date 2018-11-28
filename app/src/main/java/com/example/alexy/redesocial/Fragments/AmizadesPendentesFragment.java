@@ -1,16 +1,18 @@
 package com.example.alexy.redesocial.Fragments;
 
+
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.alexy.redesocial.Fragments.PerfilFragment;
 import com.example.alexy.redesocial.R;
 import com.example.alexy.redesocial.Singletons.RetrofitSingleton;
 import com.example.alexy.redesocial.models.User;
@@ -22,13 +24,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
-public class BuscaFragment extends Fragment {
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class AmizadesPendentesFragment extends Fragment {
 
 
     private ViewGroup busca;
 
-    public BuscaFragment() {
+    public AmizadesPendentesFragment() {
         // Required empty public constructor
     }
 
@@ -41,9 +45,7 @@ public class BuscaFragment extends Fragment {
 
         busca = v.findViewById(R.id.container2);
 
-        String texto_busca = getArguments().getString("busca");
-        System.out.println(texto_busca);
-        Call<List<User>> retornoBusca = RetrofitSingleton.getInstance().redesocialapi.buscarAmigos(texto_busca);
+        Call<List<User>> retornoBusca = RetrofitSingleton.getInstance().redesocialapi.getAmizadesPendentes(RetrofitSingleton.getInstance().token.userid);
         Callback<List<User>> callbackBusca = new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
@@ -67,10 +69,12 @@ public class BuscaFragment extends Fragment {
 
 
     private void cardbusca(final User u) {
-        CardView card = (CardView) getActivity().getLayoutInflater().inflate(R.layout.fragment_busca, busca, false);
+        CardView card = (CardView) getActivity().getLayoutInflater().inflate(R.layout.fragment_amizade_pendente_card, busca, false);
         TextView t = (TextView) card.findViewById(R.id.ResultadoNome);
-        TextView t2 = (TextView) card.findViewById(R.id.ResultadoDado);
         ImageView foto = (ImageView) card.findViewById(R.id.ResultadoImagem);
+        final Button aceitarButton = card.findViewById(R.id.aceitarButton);
+        final Button rejeitarButton = card.findViewById(R.id.rejeitarButton);
+
 
         t.setText(u.getNome());
         if(u.getFotoPerfil() != null)
@@ -82,6 +86,42 @@ public class BuscaFragment extends Fragment {
                 PerfilFragment perfilFragment = new PerfilFragment();
                 perfilFragment.user = u;
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, perfilFragment).commit();
+            }
+        });
+
+        aceitarButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Call<Void> aceitar = RetrofitSingleton.getInstance().redesocialapi.aceitaramizade(u.userId,RetrofitSingleton.getInstance().token.userid);
+                aceitar.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        ((ViewGroup)aceitarButton.getParent().getParent()).removeView((ViewGroup)aceitarButton.getParent());
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Toast.makeText(getActivity(), "Falha na requisição", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
+        rejeitarButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Call<Void> rejeitar = RetrofitSingleton.getInstance().redesocialapi.rejeitaramizade(u.userId,RetrofitSingleton.getInstance().token.userid);
+                rejeitar.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        ((ViewGroup)rejeitarButton.getParent().getParent()).removeView((ViewGroup)rejeitarButton.getParent());
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Toast.makeText(getActivity(), "Falha na requisição", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
         busca.addView(card);

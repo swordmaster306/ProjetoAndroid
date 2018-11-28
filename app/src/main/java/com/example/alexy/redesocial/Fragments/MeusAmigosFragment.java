@@ -68,7 +68,7 @@ public class MeusAmigosFragment extends Fragment {
 
 
 
-    private void popularFeed(User u){
+    private void popularFeed(final User u){
 
         CardView card = (CardView) getActivity().getLayoutInflater().inflate(R.layout.fragment_busca, feed, false);
         TextView t = (TextView) card.findViewById(R.id.ResultadoNome);
@@ -77,15 +77,18 @@ public class MeusAmigosFragment extends Fragment {
         t.setText(u.getNome());
         t2.setText(u.getQtdHistorias().toString());
 
-        card.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), "Ir para perfil", Toast.LENGTH_SHORT).show();
-            }
-        });
 
         if(u.getFotoPerfil() != null)
             foto.setImageBitmap(ConversorBase64.b64tobitmap(u.getFotoPerfil()));
+
+        card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PerfilFragment perfilFragment = new PerfilFragment();
+                perfilFragment.user = u;
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, perfilFragment).commit();
+            }
+        });
 
         feed.addView(card);
 

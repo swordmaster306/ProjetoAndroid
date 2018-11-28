@@ -18,6 +18,12 @@
             android:title="Amigos"/>
 
         <item
+            android:id="@+id/amizadesPendentes"
+            android:checked="false"
+            android:icon="@android:drawable/btn_star"
+            android:title="Amizades Pendentes"/>
+
+        <item
             android:id="@+id/configuracoes"
             android:checked="false"
             android:icon="@android:drawable/btn_star"
