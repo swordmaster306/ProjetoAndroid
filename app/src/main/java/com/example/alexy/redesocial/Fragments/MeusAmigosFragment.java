@@ -12,8 +12,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.alexy.redesocial.Activities.MainActivity;
 import com.example.alexy.redesocial.R;
 import com.example.alexy.redesocial.Singletons.RetrofitSingleton;
+import com.example.alexy.redesocial.models.Amizade;
 import com.example.alexy.redesocial.models.Historia;
 import com.example.alexy.redesocial.models.User;
 import com.example.alexy.redesocial.utils.ConversorBase64;
@@ -32,6 +34,7 @@ public class MeusAmigosFragment extends Fragment {
 
 
     private ViewGroup feed;
+    MainActivity m;
 
     public MeusAmigosFragment() {
         // Required empty public constructor
@@ -43,7 +46,8 @@ public class MeusAmigosFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_meus_amigos, container, false);
-
+        m = (MainActivity) getActivity();
+        m.TravarActivity();
         feed = v.findViewById(R.id.container);
 
         Call<List<User>> getFeedApi = RetrofitSingleton.getInstance().redesocialapi.getMeusAmigos(RetrofitSingleton.getInstance().token.userid);
@@ -55,6 +59,7 @@ public class MeusAmigosFragment extends Fragment {
                 {
                     popularFeed(u);
                 }
+                m.DestravarActivity();
             }
 
             @Override
@@ -84,9 +89,21 @@ public class MeusAmigosFragment extends Fragment {
         card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PerfilFragment perfilFragment = new PerfilFragment();
+                final PerfilFragment perfilFragment = new PerfilFragment();
                 perfilFragment.user = u;
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, perfilFragment).commit();
+                Call<Amizade> amizadeCall = RetrofitSingleton.getInstance().redesocialapi.getstatusAmizade(u.userId,RetrofitSingleton.getInstance().token.userid);
+                amizadeCall.enqueue(new Callback<Amizade>() {
+                    @Override
+                    public void onResponse(Call<Amizade> call, Response<Amizade> response) {
+                        perfilFragment.status = response.body().status;
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, perfilFragment).commit();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Amizade> call, Throwable t) {
+                        Toast.makeText(getActivity(), "Falha na requisição", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 

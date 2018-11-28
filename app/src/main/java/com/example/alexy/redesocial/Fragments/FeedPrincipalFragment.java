@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.alexy.redesocial.Activities.MainActivity;
 import com.example.alexy.redesocial.R;
 import com.example.alexy.redesocial.Singletons.RetrofitSingleton;
 import com.example.alexy.redesocial.models.Historia;
@@ -38,6 +39,7 @@ public class FeedPrincipalFragment extends Fragment {
 
 
     private ViewGroup feed;
+    MainActivity m;
 
     public FeedPrincipalFragment() {
         // Required empty public constructor
@@ -49,23 +51,28 @@ public class FeedPrincipalFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_feed_principal, container, false);
-
+        m = (MainActivity) getActivity();
         feed = v.findViewById(R.id.container);
-
+        m.TravarActivity();
 
         Call<List<Historia>> getFeedApi = RetrofitSingleton.getInstance().redesocialapi.getFeedPrincipal(RetrofitSingleton.getInstance().token.userid);
         Callback<List<Historia>> callbackFeed =  new Callback<List<Historia>>() {
             @Override
             public void onResponse(Call<List<Historia>> call, Response<List<Historia>> response) {
+                FeedPrincipalFragment.this.animation.stop();
+                FeedPrincipalFragment.this.loading.setVisibility(View.GONE);
                 List<Historia> historiasAmigos = response.body();
                 for (Historia h : historiasAmigos)
                 {
                     popularFeed(h);
                 }
+                m.DestravarActivity();
             }
 
             @Override
             public void onFailure(Call<List<Historia>> call, Throwable t) {
+                FeedPrincipalFragment.this.animation.stop();
+                FeedPrincipalFragment.this.loading.setVisibility(View.GONE);
                 Toast.makeText(getActivity(), "Falha na requisição", Toast.LENGTH_SHORT).show();
             }
         };
@@ -134,7 +141,9 @@ public class FeedPrincipalFragment extends Fragment {
                         likeButton.setEnabled(false);
                         likeButton.setColorFilter(Color.BLUE, PorterDuff.Mode.SRC_IN);
                         likes.setText(String.valueOf(Integer.valueOf(likes.getText().toString()) +1));
-                        dislikes.setText(String.valueOf(Integer.valueOf(dislikes.getText().toString())-1));
+                        if(historia.deulike == Status.DISLIKED) {
+                            dislikes.setText(String.valueOf(Integer.valueOf(dislikes.getText().toString()) - 1));
+                        }
                     }
 
                     @Override
@@ -163,7 +172,9 @@ public class FeedPrincipalFragment extends Fragment {
                         }
                         dislikeButton.setEnabled(false);
                         dislikeButton.setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
-                        likes.setText(String.valueOf(Integer.valueOf(likes.getText().toString()) -1));
+                        if(historia.deulike == Status.LIKED) {
+                            likes.setText(String.valueOf(Integer.valueOf(likes.getText().toString()) -1));
+                        }
                         dislikes.setText(String.valueOf(Integer.valueOf(dislikes.getText().toString())+1));
                     }
 
@@ -205,8 +216,6 @@ public class FeedPrincipalFragment extends Fragment {
             foto.setImageBitmap(ConversorBase64.b64tobitmap(historia.foto));
         }
         feed.addView(cardView);
-        this.animation.stop();
-        this.loading.setVisibility(View.GONE);
     }
 
     AnimationDrawable animation;

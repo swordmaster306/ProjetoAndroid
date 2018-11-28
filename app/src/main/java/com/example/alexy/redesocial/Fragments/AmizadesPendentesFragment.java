@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.alexy.redesocial.Activities.MainActivity;
 import com.example.alexy.redesocial.Fragments.PerfilFragment;
 import com.example.alexy.redesocial.R;
 import com.example.alexy.redesocial.Singletons.RetrofitSingleton;
@@ -31,6 +32,7 @@ public class AmizadesPendentesFragment extends Fragment {
 
 
     private ViewGroup busca;
+    MainActivity m;
 
     public AmizadesPendentesFragment() {
         // Required empty public constructor
@@ -43,6 +45,8 @@ public class AmizadesPendentesFragment extends Fragment {
 
         View v = inflater.inflate(R.layout.fragment_busca_container, container2, false);
 
+        m = (MainActivity) getActivity();
+        m.TravarActivity();
         busca = v.findViewById(R.id.container2);
 
         Call<List<User>> retornoBusca = RetrofitSingleton.getInstance().redesocialapi.getAmizadesPendentes(RetrofitSingleton.getInstance().token.userid);
@@ -54,6 +58,7 @@ public class AmizadesPendentesFragment extends Fragment {
                 for(User u : resultado){
                     cardbusca(u);
                 }
+                m.DestravarActivity();
             }
 
             @Override

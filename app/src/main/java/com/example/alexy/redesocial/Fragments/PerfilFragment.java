@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.alexy.redesocial.Activities.MainActivity;
 import com.example.alexy.redesocial.R;
 import com.example.alexy.redesocial.Singletons.RetrofitSingleton;
 import com.example.alexy.redesocial.models.Historia;
@@ -40,8 +41,7 @@ import retrofit2.Response;
  */
 public class PerfilFragment extends Fragment {
 
-    private int userid;
-    public int status;
+    public String status;
     public User user;
     private ViewGroup feed;
     private ImageView fotoPerfil;
@@ -50,7 +50,8 @@ public class PerfilFragment extends Fragment {
 
 
     private Button editarPerfilButton;
-    private ImageButton addDeleteButton;
+    private Button addDeleteButton;
+    MainActivity m;
 
 
     public PerfilFragment() {
@@ -65,8 +66,8 @@ public class PerfilFragment extends Fragment {
 
 
         View v = getActivity().getLayoutInflater().inflate(R.layout.fragment_perfil, container, false);
-
-
+        m = (MainActivity) getActivity();
+        m.TravarActivity();
         editarPerfilButton = v.findViewById(R.id.editarPerfilButton);
         if(RetrofitSingleton.getInstance().token.userid != user.userId){
             editarPerfilButton.setVisibility(View.GONE);
@@ -75,12 +76,41 @@ public class PerfilFragment extends Fragment {
         addDeleteButton = v.findViewById(R.id.addDeleteButton);
 
 
-        if(status == 1){//nao eh amigo
-            addDeleteButton.setImageResource(R.drawable.);
-        }else if(status == 2){//eh amigo
 
-        }else{//eh voce
+
+        if(status.equals("Inexistente")){//nao eh amigo
+            //Colocar icone de adicionar
+            addDeleteButton.setText("Adicionar");
+            addDeleteButton.setOnClickListener(adicionarListener);
+        }else if(status.equals("Aprovada")){//eh amigo
+            //Colocar icone de deletar
+            addDeleteButton.setText("Remover");
+            addDeleteButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Call<Void> deletaramigo = RetrofitSingleton.getInstance().redesocialapi.deletaramigo(user.userId,RetrofitSingleton.getInstance().token.userid);
+                    deletaramigo.enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            //Colocar icone de adicionar
+                            addDeleteButton.setText("Adicionar");
+                            addDeleteButton.setOnClickListener(adicionarListener);
+                            Toast.makeText(getActivity(), "Amigo deletado com sucesso", Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            Toast.makeText(getActivity(), "Falha na requisição", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            });
+        }else if(status.equals("Proprio")){//eh voce
+
             addDeleteButton.setVisibility(View.GONE);
+        }else if (status.equals("Pendente")){
+            addDeleteButton.setText("Pendente");
+            addDeleteButton.setEnabled(false);
         }
 
 
@@ -107,6 +137,7 @@ public class PerfilFragment extends Fragment {
                 for (Historia hist: historias) {
                     popularFeed(hist);
                 }
+                m.DestravarActivity();
             }
 
             @Override
@@ -164,6 +195,7 @@ public class PerfilFragment extends Fragment {
                     deletarHistoriaCall.enqueue(deletarHistoriaCallback);
                 }
             });
+
         }
 
         likeButton.setOnClickListener(new View.OnClickListener() {
@@ -183,7 +215,9 @@ public class PerfilFragment extends Fragment {
                         likeButton.setEnabled(false);
                         likeButton.setColorFilter(Color.BLUE, PorterDuff.Mode.SRC_IN);
                         likes.setText(String.valueOf(Integer.valueOf(likes.getText().toString()) +1));
-                        dislikes.setText(String.valueOf(Integer.valueOf(dislikes.getText().toString())-1));
+                        if(h.deulike == Status.DISLIKED) {
+                            dislikes.setText(String.valueOf(Integer.valueOf(dislikes.getText().toString()) - 1));
+                        }
                     }
 
                     @Override
@@ -211,7 +245,9 @@ public class PerfilFragment extends Fragment {
                         likeButton.clearColorFilter();
                         dislikeButton.setEnabled(false);
                         dislikeButton.setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
-                        likes.setText(String.valueOf(Integer.valueOf(likes.getText().toString()) -1));
+                        if(h.deulike == Status.LIKED) {
+                            likes.setText(String.valueOf(Integer.valueOf(likes.getText().toString()) -1));
+                        }
                         dislikes.setText(String.valueOf(Integer.valueOf(dislikes.getText().toString())+1));
                     }
 
@@ -259,4 +295,27 @@ public class PerfilFragment extends Fragment {
     }
 
 
+
+
+
+    final View.OnClickListener adicionarListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Call<Void> adicionarAmigo = RetrofitSingleton.getInstance().redesocialapi.adicionaramigo(user.userId,RetrofitSingleton.getInstance().token.userid);
+            adicionarAmigo.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    //Colocar icone de pendente
+                    addDeleteButton.setText("Pendente");
+                    addDeleteButton.setEnabled(false);
+                    Toast.makeText(getActivity(), "Amigo adicionado com sucesso", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Toast.makeText(getActivity(), "Falha na requisição", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    };
 }

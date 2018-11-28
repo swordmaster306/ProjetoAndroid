@@ -35,8 +35,8 @@ public interface RedeSocialService {
     @GET("api/feed/perfil/{id}")
     Call<User> getPerfil(@Path("id") int id);
 
-    @GET("api/feed/buscaramigos/{nome}")
-    Call<List<User>> buscarAmigos(@Path("nome") String nome);
+    @GET("api/feed/buscaramigos/{nome}/{id}")
+    Call<List<User>> buscarAmigos(@Path("nome") String nome,@Path("id") int id);
 
     @GET("api/feed/historias/{id}")
     Call<List<Historia>> getPerfilHistorias(@Path("id") int id);
@@ -67,7 +67,7 @@ public interface RedeSocialService {
     @POST("api/addremove/adicionaramigo/{id1}/{id2}")
     Call<Void> adicionaramigo(@Path("id1") int id1,@Path("id2") int id2);
 
-    @POST("api/addremove/deletaramigo/{id1}/{id2}")
+    @DELETE("api/addremove/deletaramigo/{id1}/{id2}")
     Call<Void> deletaramigo(@Path("id1") int id1,@Path("id2") int id2);
 
 

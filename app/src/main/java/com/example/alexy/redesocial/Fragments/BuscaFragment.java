@@ -11,8 +11,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.alexy.redesocial.Activities.MainActivity;
 import com.example.alexy.redesocial.R;
 import com.example.alexy.redesocial.Singletons.RetrofitSingleton;
+import com.example.alexy.redesocial.models.Amizade;
 import com.example.alexy.redesocial.models.User;
 import com.example.alexy.redesocial.utils.ConversorBase64;
 
@@ -27,6 +29,7 @@ public class BuscaFragment extends Fragment {
 
 
     private ViewGroup busca;
+    MainActivity m;
 
     public BuscaFragment() {
         // Required empty public constructor
@@ -38,20 +41,21 @@ public class BuscaFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View v = inflater.inflate(R.layout.fragment_busca_container, container2, false);
-
+        m = (MainActivity) getActivity();
+        m.TravarActivity();
         busca = v.findViewById(R.id.container2);
 
         String texto_busca = getArguments().getString("busca");
         System.out.println(texto_busca);
-        Call<List<User>> retornoBusca = RetrofitSingleton.getInstance().redesocialapi.buscarAmigos(texto_busca);
+        Call<List<User>> retornoBusca = RetrofitSingleton.getInstance().redesocialapi.buscarAmigos(texto_busca,RetrofitSingleton.getInstance().token.userid);
         Callback<List<User>> callbackBusca = new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                //Toast.makeText(getActivity(), String.valueOf(response.body().size()), Toast.LENGTH_SHORT).show();
                 List<User> resultado = response.body();
                 for(User u : resultado){
                     cardbusca(u);
                 }
+                m.DestravarActivity();
             }
 
             @Override
@@ -79,9 +83,21 @@ public class BuscaFragment extends Fragment {
         card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                PerfilFragment perfilFragment = new PerfilFragment();
+                final PerfilFragment perfilFragment = new PerfilFragment();
                 perfilFragment.user = u;
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, perfilFragment).commit();
+                Call<Amizade> amizadeCall = RetrofitSingleton.getInstance().redesocialapi.getstatusAmizade(u.userId,RetrofitSingleton.getInstance().token.userid);
+                amizadeCall.enqueue(new Callback<Amizade>() {
+                    @Override
+                    public void onResponse(Call<Amizade> call, Response<Amizade> response) {
+                        perfilFragment.status = response.body().status;
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, perfilFragment).commit();
+                    }
+
+                    @Override
+                    public void onFailure(Call<Amizade> call, Throwable t) {
+                        Toast.makeText(getActivity(), "Falha na requisição", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
         busca.addView(card);

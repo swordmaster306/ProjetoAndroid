@@ -4,6 +4,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.SearchView;
@@ -43,7 +45,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ImageView loading = (ImageView)findViewById(R.id.imageView);
+
+        TravarActivity();
+        final ImageView loading = (ImageView)findViewById(R.id.imageView);
         animation = (AnimationDrawable)loading.getDrawable();
         animation.start();
 
@@ -86,17 +90,21 @@ public class MainActivity extends AppCompatActivity {
                 switch (id){
                     case R.id.publicacoes:
                         FeedPrincipalFragment frag = new FeedPrincipalFragment();
+                        frag.setAnimation(animation);
+                        frag.setLoading(loading);
                         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,frag).commit();
                         return true;
                     case R.id.meu_perfil:
                         //Carregar fragment de perfil
                         final PerfilFragment perfilFragment = new PerfilFragment();
+
                         Call<User> getPerfil = RetrofitSingleton.getInstance().redesocialapi.getPerfil(RetrofitSingleton.getInstance().token.userid);
                         getPerfil.enqueue(new Callback<User>() {
                             @Override
                             public void onResponse(Call<User> call, Response<User> response) {
                                 User u = response.body();
                                 perfilFragment.user = u;
+                                perfilFragment.status = "Proprio";
                                 getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, perfilFragment).commit();
                             }
 
@@ -188,6 +196,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         return true;
+    }
+
+    public void TravarActivity(){
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+
+    public void DestravarActivity(){
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 
 }
