@@ -206,12 +206,19 @@ public class FeedPrincipalFragment extends Fragment {
         }
         feed.addView(cardView);
         this.animation.stop();
+        this.loading.setVisibility(View.GONE);
     }
 
     AnimationDrawable animation;
     public void setAnimation(AnimationDrawable animation)
     {
         this.animation = animation;
+    }
+
+    ImageView loading;
+    public void setLoading(ImageView loading)
+    {
+        this.loading = loading;
     }
 
 }

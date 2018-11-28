@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
         FeedPrincipalFragment frag = new FeedPrincipalFragment();
         frag.setAnimation(animation);
+        frag.setLoading(loading);
         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,frag).commit();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
