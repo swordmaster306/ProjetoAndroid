@@ -1,6 +1,10 @@
 package com.example.alexy.redesocial.Fragments;
 
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.AnimationDrawable;
@@ -94,7 +98,7 @@ public class FeedPrincipalFragment extends Fragment {
         final TextView dislikes = (TextView) cardView.findViewById(R.id.publicacaoDislikeCounter);
         final ImageView likeButton = cardView.findViewById(R.id.likeButton);
         final ImageView dislikeButton = cardView.findViewById(R.id.dislikeButton);
-        final Button deletarButton = (Button) cardView.findViewById(R.id.deletarButton);
+        final ImageView deletarButton = (ImageView) cardView.findViewById(R.id.deletarButton);
 
         if(historia.userId != RetrofitSingleton.getInstance().token.userid){
             deletarButton.setVisibility(View.GONE);
@@ -102,22 +106,30 @@ public class FeedPrincipalFragment extends Fragment {
             deletarButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Historia hist = new Historia();
-                    hist.id = historia.id;
-                    Call<Void> deletarHistoriaCall = RetrofitSingleton.getInstance().redesocialapi.deletarHistoria(hist);
-                    Callback<Void> deletarHistoriaCallback = new Callback<Void>() {
-                        @Override
-                        public void onResponse(Call<Void> call, Response<Void> response) {
-                            ((ViewGroup)deletarButton.getParent().getParent()).removeView((ViewGroup)deletarButton.getParent());
-                            Toast.makeText(getActivity(), "História deletada", Toast.LENGTH_SHORT).show();
-                        }
+                    new AlertDialog.Builder(getContext())
+                            .setTitle("Alerta")
+                            .setMessage("Tem certeza que deseja deletar essa postagem?")
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setPositiveButton(android.R.string.yes, new OnClickListener() {
+                                public void onClick(DialogInterface dialog, int whichButton) {
+                                    Historia hist = new Historia();
+                                    hist.id = historia.id;
+                                    Call<Void> deletarHistoriaCall = RetrofitSingleton.getInstance().redesocialapi.deletarHistoria(hist);
+                                    Callback<Void> deletarHistoriaCallback = new Callback<Void>() {
+                                        @Override
+                                        public void onResponse(Call<Void> call, Response<Void> response) {
+                                            ((ViewGroup)deletarButton.getParent().getParent()).removeView((ViewGroup)deletarButton.getParent());
+                                            Toast.makeText(getActivity(), "História deletada", Toast.LENGTH_SHORT).show();
+                                        }
 
-                        @Override
-                        public void onFailure(Call<Void> call, Throwable t) {
-                            Toast.makeText(getActivity(), "Erro na requisição de delete de história", Toast.LENGTH_SHORT).show();
-                        }
-                    };
-                    deletarHistoriaCall.enqueue(deletarHistoriaCallback);
+                                        @Override
+                                        public void onFailure(Call<Void> call, Throwable t) {
+                                            Toast.makeText(getActivity(), "Erro na requisição de delete de história", Toast.LENGTH_SHORT).show();
+                                        }
+                                    };
+                                    deletarHistoriaCall.enqueue(deletarHistoriaCallback);
+                                }
+                            }).setNegativeButton(android.R.string.no, null).show();
                 }
             });
         }

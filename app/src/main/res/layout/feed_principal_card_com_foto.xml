@@ -29,21 +29,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginTop="36dp"
             android:text="DataHora"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.95"
+            android:textSize="10sp"
             app:layout_constraintStart_toEndOf="@+id/publicacaoNome"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/publicacaoNome"
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
+            android:layout_height="29dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="20dp"
             android:text="Nome"
+            android:textSize="24sp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -52,13 +52,13 @@
             android:layout_width="327dp"
             android:layout_height="52dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="56dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:text="texto da publicacao"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.517"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/publicacaoNome" />
 
         <TextView
             android:id="@+id/publicacaoLikeCounter"
@@ -81,18 +81,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/dislikeButton" />
 
-        <Button
-            android:id="@+id/deletarButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="Deletar"
-            app:layout_constraintEnd_toStartOf="@+id/publicacaoDataHora"
-            app:layout_constraintStart_toEndOf="@+id/publicacaoNome"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <ImageView
             android:id="@+id/likeButton"
             android:layout_width="71dp"
@@ -113,6 +101,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/publicacaoFoto"
             app:srcCompat="@drawable/thumb_down" />
+
+        <ImageView
+            android:id="@+id/deletarButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/delete_button" />
 
     </android.support.constraint.ConstraintLayout>
 
