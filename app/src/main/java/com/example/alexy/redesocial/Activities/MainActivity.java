@@ -178,6 +178,9 @@ public class MainActivity extends AppCompatActivity {
         // Carrega o menu
         getMenuInflater().inflate(R.menu.main, menu);
         SearchView busca = (SearchView) menu.findItem(R.id.botao_busca).getActionView();
+        final ImageView loading = (ImageView)findViewById(R.id.imageView);
+        animation = (AnimationDrawable)loading.getDrawable();
+        animation.start();
 
         busca.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -185,6 +188,10 @@ public class MainActivity extends AppCompatActivity {
                 Bundle bundle = new Bundle();
                 bundle.putString("busca", query);
                 BuscaFragment buscafrag = new BuscaFragment();
+                animation.start();
+                loading.setVisibility(View.VISIBLE);
+                buscafrag.setAnimation(animation);
+                buscafrag.setLoading(loading);
                 buscafrag.setArguments(bundle);
                 getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,buscafrag).commit();
                 return false;

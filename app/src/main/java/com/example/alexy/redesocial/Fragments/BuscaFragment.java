@@ -1,5 +1,6 @@
 package com.example.alexy.redesocial.Fragments;
 
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
@@ -51,6 +52,8 @@ public class BuscaFragment extends Fragment {
         Callback<List<User>> callbackBusca = new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                BuscaFragment.this.animation.stop();
+                BuscaFragment.this.loading.setVisibility(View.GONE);
                 List<User> resultado = response.body();
                 for(User u : resultado){
                     cardbusca(u);
@@ -60,6 +63,8 @@ public class BuscaFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<User>> call, Throwable t) {
+                BuscaFragment.this.animation.stop();
+                BuscaFragment.this.loading.setVisibility(View.GONE);
                 Toast.makeText(getActivity(), "Erro na requisição de busca de amigos", Toast.LENGTH_SHORT).show();
             }
         };
@@ -102,5 +107,15 @@ public class BuscaFragment extends Fragment {
         });
         busca.addView(card);
     }
+    AnimationDrawable animation;
+    public void setAnimation(AnimationDrawable animation)
+    {
+        this.animation = animation;
+    }
 
+    ImageView loading;
+    public void setLoading(ImageView loading)
+    {
+        this.loading = loading;
+    }
 }
