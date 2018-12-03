@@ -28,12 +28,12 @@
             android:id="@+id/publicacaoDataHora"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginEnd="32dp"
             android:text="DataHora"
             android:textSize="10sp"
-            app:layout_constraintStart_toEndOf="@+id/publicacaoNome"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/publicacaoFoto" />
 
         <TextView
             android:id="@+id/publicacaoNome"
@@ -51,12 +51,10 @@
             android:id="@+id/publicacaoTexto"
             android:layout_width="327dp"
             android:layout_height="52dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="casual"
             android:text="texto da publicacao"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.517"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/publicacaoNome" />
 
@@ -64,29 +62,29 @@
             android:id="@+id/publicacaoLikeCounter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="64dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="56dp"
             android:text="100"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dislikeButton" />
+            app:layout_constraintStart_toEndOf="@+id/likeButton"
+            app:layout_constraintTop_toBottomOf="@+id/publicacaoFoto" />
 
 
         <TextView
             android:id="@+id/publicacaoDislikeCounter"
             android:layout_width="8dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="64dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="56dp"
             android:text="1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/dislikeButton" />
+            app:layout_constraintStart_toEndOf="@+id/dislikeButton"
+            app:layout_constraintTop_toBottomOf="@+id/publicacaoFoto" />
 
         <ImageView
             android:id="@+id/likeButton"
-            android:layout_width="71dp"
-            android:layout_height="52dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="20dp"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="48dp"
             app:chainUseRtl="true"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/publicacaoFoto"
@@ -94,11 +92,11 @@
 
         <ImageView
             android:id="@+id/dislikeButton"
-            android:layout_width="71dp"
-            android:layout_height="51dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="24dp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="48dp"
+            app:layout_constraintStart_toEndOf="@+id/publicacaoLikeCounter"
             app:layout_constraintTop_toBottomOf="@+id/publicacaoFoto"
             app:srcCompat="@drawable/thumb_down" />
 
@@ -111,6 +109,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/delete_button" />
+
+        <Space
+            android:layout_width="352dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="88dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/publicacaoFoto" />
 
     </android.support.constraint.ConstraintLayout>
 

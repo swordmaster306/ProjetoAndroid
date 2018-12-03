@@ -43,6 +43,7 @@ public class FeedPrincipalFragment extends Fragment {
 
 
     private ViewGroup feed;
+    private List<Historia> historiasAmigos;
     MainActivity m;
 
     public FeedPrincipalFragment() {
@@ -65,7 +66,7 @@ public class FeedPrincipalFragment extends Fragment {
             public void onResponse(Call<List<Historia>> call, Response<List<Historia>> response) {
                 FeedPrincipalFragment.this.animation.stop();
                 FeedPrincipalFragment.this.loading.setVisibility(View.GONE);
-                List<Historia> historiasAmigos = response.body();
+                historiasAmigos = response.body();
                 for (Historia h : historiasAmigos)
                 {
                     popularFeed(h);
@@ -120,6 +121,12 @@ public class FeedPrincipalFragment extends Fragment {
                                         public void onResponse(Call<Void> call, Response<Void> response) {
                                             ((ViewGroup)deletarButton.getParent().getParent()).removeView((ViewGroup)deletarButton.getParent());
                                             Toast.makeText(getActivity(), "História deletada", Toast.LENGTH_SHORT).show();
+                                            Historia remover = null;
+                                            for(Historia h : historiasAmigos){
+                                                if(h.id == historia.id)
+                                                    remover = h;
+                                            }
+                                            historiasAmigos.remove(remover);
                                         }
 
                                         @Override
@@ -152,9 +159,20 @@ public class FeedPrincipalFragment extends Fragment {
                         }
                         likeButton.setEnabled(false);
                         likeButton.setColorFilter(Color.BLUE, PorterDuff.Mode.SRC_IN);
-                        likes.setText(String.valueOf(Integer.valueOf(likes.getText().toString()) +1));
-                        if(historia.deulike == Status.DISLIKED) {
-                            dislikes.setText(String.valueOf(Integer.valueOf(dislikes.getText().toString()) - 1));
+                        for(Historia h : historiasAmigos){
+                            if(h.id == historia.id){
+                                switch(h.deulike){
+                                    case Status.DISLIKED:
+                                        likes.setText(String.valueOf(Integer.valueOf(likes.getText().toString()) +1));
+                                        dislikes.setText(String.valueOf(Integer.valueOf(dislikes.getText().toString()) -1));
+                                        h.deulike = 1;
+                                        break;
+                                    case Status.NO_STATUS:
+                                        likes.setText(String.valueOf(Integer.valueOf(likes.getText().toString()) +1));
+                                        h.deulike = 1;
+                                        break;
+                                }
+                            }
                         }
                     }
 
@@ -184,10 +202,21 @@ public class FeedPrincipalFragment extends Fragment {
                         }
                         dislikeButton.setEnabled(false);
                         dislikeButton.setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
-                        if(historia.deulike == Status.LIKED) {
-                            likes.setText(String.valueOf(Integer.valueOf(likes.getText().toString()) -1));
+                        for(Historia h : historiasAmigos){
+                            if(h.id == historia.id){
+                                switch(h.deulike){
+                                    case Status.LIKED:
+                                        likes.setText(String.valueOf(Integer.valueOf(likes.getText().toString()) - 1));
+                                        dislikes.setText(String.valueOf(Integer.valueOf(dislikes.getText().toString()) +1));
+                                        h.deulike = 2;
+                                        break;
+                                    case Status.NO_STATUS:
+                                        dislikes.setText(String.valueOf(Integer.valueOf(dislikes.getText().toString())+1));
+                                        h.deulike = 2;
+                                        break;
+                                }
+                            }
                         }
-                        dislikes.setText(String.valueOf(Integer.valueOf(dislikes.getText().toString())+1));
                     }
 
                     @Override

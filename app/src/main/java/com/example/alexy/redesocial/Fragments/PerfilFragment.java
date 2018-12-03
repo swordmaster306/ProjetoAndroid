@@ -50,6 +50,8 @@ public class PerfilFragment extends Fragment {
     private TextView nomePerfil;
     RetrofitSingleton retrofit;
 
+    private List<Historia> historias;
+
 
     private Button editarPerfilButton;
     private Button addDeleteButton;
@@ -135,7 +137,7 @@ public class PerfilFragment extends Fragment {
         Callback<List<Historia>> callbackFeed =  new Callback<List<Historia>>() {
             @Override
             public void onResponse(Call<List<Historia>> call, Response<List<Historia>> response) {
-                List<Historia> historias = response.body();
+                historias = response.body();
                 for (Historia hist: historias) {
                     popularFeed(hist);
                 }
@@ -193,6 +195,12 @@ public class PerfilFragment extends Fragment {
                                         public void onResponse(Call<Void> call, Response<Void> response) {
                                             ((ViewGroup)deletarButton.getParent().getParent()).removeView((ViewGroup)deletarButton.getParent());
                                             Toast.makeText(getActivity(), "História deletada", Toast.LENGTH_SHORT).show();
+                                            Historia remover = null;
+                                            for(Historia hist : historias){
+                                                if(h.id == hist.id)
+                                                    remover = hist;
+                                            }
+                                            historias.remove(remover);
                                         }
 
                                         @Override
@@ -224,9 +232,20 @@ public class PerfilFragment extends Fragment {
                         dislikeButton.clearColorFilter();
                         likeButton.setEnabled(false);
                         likeButton.setColorFilter(Color.BLUE, PorterDuff.Mode.SRC_IN);
-                        likes.setText(String.valueOf(Integer.valueOf(likes.getText().toString()) +1));
-                        if(h.deulike == Status.DISLIKED) {
-                            dislikes.setText(String.valueOf(Integer.valueOf(dislikes.getText().toString()) - 1));
+                        for(Historia hist : historias){
+                            if(h.id == hist.id){
+                                switch(hist.deulike){
+                                    case Status.DISLIKED:
+                                        likes.setText(String.valueOf(Integer.valueOf(likes.getText().toString()) +1));
+                                        dislikes.setText(String.valueOf(Integer.valueOf(dislikes.getText().toString()) -1));
+                                        hist.deulike = 1;
+                                        break;
+                                    case Status.NO_STATUS:
+                                        likes.setText(String.valueOf(Integer.valueOf(likes.getText().toString()) +1));
+                                        hist.deulike = 1;
+                                        break;
+                                }
+                            }
                         }
                     }
 
@@ -255,10 +274,21 @@ public class PerfilFragment extends Fragment {
                         likeButton.clearColorFilter();
                         dislikeButton.setEnabled(false);
                         dislikeButton.setColorFilter(Color.RED, PorterDuff.Mode.SRC_IN);
-                        if(h.deulike == Status.LIKED) {
-                            likes.setText(String.valueOf(Integer.valueOf(likes.getText().toString()) -1));
+                        for(Historia hist : historias){
+                            if(h.id == hist.id){
+                                switch(hist.deulike){
+                                    case Status.LIKED:
+                                        likes.setText(String.valueOf(Integer.valueOf(likes.getText().toString()) - 1));
+                                        dislikes.setText(String.valueOf(Integer.valueOf(dislikes.getText().toString()) +1));
+                                        hist.deulike = 2;
+                                        break;
+                                    case Status.NO_STATUS:
+                                        dislikes.setText(String.valueOf(Integer.valueOf(dislikes.getText().toString())+1));
+                                        hist.deulike = 2;
+                                        break;
+                                }
+                            }
                         }
-                        dislikes.setText(String.valueOf(Integer.valueOf(dislikes.getText().toString())+1));
                     }
 
                     @Override

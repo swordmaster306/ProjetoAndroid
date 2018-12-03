@@ -16,33 +16,33 @@
             android:id="@+id/publicacaoDataHora"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="32dp"
             android:text="DataHora"
             android:textSize="10sp"
-            app:layout_constraintStart_toEndOf="@+id/publicacaoNome"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/publicacaoTexto" />
 
         <TextView
             android:id="@+id/publicacaoNome"
             android:layout_width="wrap_content"
             android:layout_height="29dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="20dp"
             android:text="Nome"
             android:textSize="24sp"
             android:textStyle="bold"
-            tools:layout_editor_absoluteX="28dp"
-            tools:layout_editor_absoluteY="20dp" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/publicacaoTexto"
             android:layout_width="327dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_height="52dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="casual"
             android:text="texto da publicacao"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.724"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/publicacaoNome" />
 
@@ -50,11 +50,11 @@
             android:id="@+id/publicacaoLikeCounter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="48dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="36dp"
             android:text="100"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/likeButton" />
+            app:layout_constraintStart_toEndOf="@+id/likeButton"
+            app:layout_constraintTop_toBottomOf="@+id/publicacaoTexto" />
 
 
         <TextView
@@ -62,33 +62,31 @@
             android:layout_width="8dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="52dp"
+            android:layout_marginTop="36dp"
             android:text="1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/publicacaoLikeCounter"
-            app:layout_constraintTop_toBottomOf="@+id/dislikeButton" />
-
-        <ImageView
-            android:id="@+id/dislikeButton"
-            android:layout_width="71dp"
-            android:layout_height="52dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="24dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/publicacaoTexto"
-            app:srcCompat="@drawable/thumb_down" />
+            app:layout_constraintStart_toEndOf="@+id/dislikeButton"
+            app:layout_constraintTop_toBottomOf="@+id/publicacaoTexto" />
 
         <ImageView
             android:id="@+id/likeButton"
-            android:layout_width="71dp"
-            android:layout_height="52dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="8dp"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="28dp"
+            app:chainUseRtl="true"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/publicacaoTexto"
             app:srcCompat="@drawable/thumb_up" />
+
+        <ImageView
+            android:id="@+id/dislikeButton"
+            android:layout_width="40dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="28dp"
+            app:layout_constraintStart_toEndOf="@+id/publicacaoLikeCounter"
+            app:layout_constraintTop_toBottomOf="@+id/publicacaoTexto"
+            app:srcCompat="@drawable/thumb_down" />
 
         <ImageView
             android:id="@+id/deletarButton"
@@ -99,6 +97,17 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/delete_button" />
+
+        <Space
+            android:layout_width="352dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="68dp"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/publicacaoTexto" />
 
     </android.support.constraint.ConstraintLayout>
 
