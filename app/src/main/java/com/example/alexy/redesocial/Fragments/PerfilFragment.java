@@ -341,7 +341,7 @@ public class PerfilFragment extends Fragment {
     final View.OnClickListener adicionarListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Call<Void> adicionarAmigo = RetrofitSingleton.getInstance().redesocialapi.adicionaramigo(user.userId,RetrofitSingleton.getInstance().token.userid);
+            Call<Void> adicionarAmigo = RetrofitSingleton.getInstance().redesocialapi.adicionaramigo(RetrofitSingleton.getInstance().token.userid,user.userId);
             adicionarAmigo.enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
