@@ -68,6 +68,7 @@ public class LoginActivity extends AppCompatActivity {
                     Token token = response.body();
                     RetrofitSingleton.getInstance().token = token;
                     if(token.authenticated) {
+                        RetrofitSingleton.ReSetupRetrofit();
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         startActivity(intent);
                         loginButton.setEnabled(true);
