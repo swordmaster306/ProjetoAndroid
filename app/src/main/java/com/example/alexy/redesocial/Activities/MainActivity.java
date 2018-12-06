@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.alexy.redesocial.Fragments.AmizadesPendentesFragment;
 import com.example.alexy.redesocial.Fragments.BuscaFragment;
+import com.example.alexy.redesocial.Fragments.Configuracoes;
 import com.example.alexy.redesocial.Fragments.FeedPrincipalFragment;
 import com.example.alexy.redesocial.Fragments.MeusAmigosFragment;
 import com.example.alexy.redesocial.Fragments.PerfilFragment;
@@ -89,10 +90,16 @@ public class MainActivity extends AppCompatActivity {
                 //Alterna o fragment do FrameLayout
                 switch (id){
                     case R.id.publicacoes:
-                        FeedPrincipalFragment frag = new FeedPrincipalFragment();
-                        frag.setAnimation(animation);
-                        frag.setLoading(loading);
-                        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,frag).commit();
+                        FeedPrincipalFragment feed = new FeedPrincipalFragment();
+                        feed.setAnimation(animation);
+                        feed.setLoading(loading);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, feed).commit();
+                        return true;
+                    case R.id.configuracoes:
+                        Configuracoes conf = new Configuracoes();
+                        conf.setAnimation(animation);
+                        conf.setLoading(loading);
+                        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame, conf).commit();
                         return true;
                     case R.id.meu_perfil:
                         //Carregar fragment de perfil
@@ -121,9 +128,6 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.amizadesPendentes:
                         AmizadesPendentesFragment amizadesPendentesFragment = new AmizadesPendentesFragment();
                         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,amizadesPendentesFragment).commit();
-                        return true;
-                    case R.id.configuracoes:
-                        //Carregar possiveis configuracoes
                         return true;
                     case R.id.sobre:
                         SobreFragment sobreFrag = new SobreFragment();

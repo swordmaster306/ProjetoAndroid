@@ -15,6 +15,7 @@ import retrofit2.http.HTTP;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 
@@ -33,7 +34,8 @@ public interface RedeSocialService {
     @GET("api/feed/meusamigos/{id}")
     Call<List<User>> getMeusAmigos(@Path("id") int id);
 
-
+    @PUT("api/profile/editar")
+    Call<User> editarPerfil(@Body User usuario);
 
     @GET("api/feed/perfil/{id}")
     Call<User> getPerfil(@Path("id") int id);

@@ -54,7 +54,7 @@ public class FeedPrincipalFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        if(animation != null) animation.start();
         View v = inflater.inflate(R.layout.fragment_feed_principal, container, false);
         m = (MainActivity) getActivity();
         feed = v.findViewById(R.id.container);
@@ -82,6 +82,7 @@ public class FeedPrincipalFragment extends Fragment {
             }
         };
         getFeedApi.enqueue(callbackFeed);
+        if (animation != null) animation.stop();
         return v;
     }
 
