@@ -59,6 +59,7 @@ public class Configuracoes extends Fragment {
             public void onClick(View v) {
                 if(isValidForm()) {
                     User u = new User();
+                    u.userId = RetrofitSingleton.token.userid;
                     u.nome = userName.getText().toString().trim();
                     if (!password.getText().toString().isEmpty())
                         u.senha = password.getText().toString();
@@ -66,7 +67,7 @@ public class Configuracoes extends Fragment {
                     editarPerfil.enqueue(new Callback<User>() {
                         @Override
                         public void onResponse(Call<User> call, Response<User> response) {
-                            Toast.makeText(getActivity(), "Perfil atualizado com sucesso", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), String.valueOf(response.code()), Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
