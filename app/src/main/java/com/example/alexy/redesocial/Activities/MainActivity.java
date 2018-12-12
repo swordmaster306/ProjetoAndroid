@@ -104,7 +104,6 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.meu_perfil:
                         //Carregar fragment de perfil
                         final PerfilFragment perfilFragment = new PerfilFragment();
-
                         Call<User> getPerfil = RetrofitSingleton.getInstance().redesocialapi.getPerfil(RetrofitSingleton.getInstance().token.userid);
                         getPerfil.enqueue(new Callback<User>() {
                             @Override
@@ -128,10 +127,6 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.amizadesPendentes:
                         AmizadesPendentesFragment amizadesPendentesFragment = new AmizadesPendentesFragment();
                         getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,amizadesPendentesFragment).commit();
-                        return true;
-                    case R.id.sobre:
-                        SobreFragment sobreFrag = new SobreFragment();
-                        getSupportFragmentManager().beginTransaction().replace(R.id.content_frame,sobreFrag).commit();
                         return true;
                     case R.id.sair:
                         //Deve confirmar e voltar para tela de login

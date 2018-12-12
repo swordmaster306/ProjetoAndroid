@@ -1,9 +1,12 @@
 package com.example.alexy.redesocial.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,17 +20,21 @@ import com.example.alexy.redesocial.Activities.MainActivity;
 import com.example.alexy.redesocial.R;
 import com.example.alexy.redesocial.Singletons.RetrofitSingleton;
 import com.example.alexy.redesocial.models.User;
+import com.example.alexy.redesocial.utils.ConversorBase64;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
+import static android.app.Activity.RESULT_OK;
+
 public class Configuracoes extends Fragment {
 
     EditText userName;
     EditText password;
     EditText passwordConfirmation;
+    String fotoPerfil;
 
     public Configuracoes() {
         // Required empty public constructor
@@ -37,6 +44,7 @@ public class Configuracoes extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container2, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_configuracoes, container2, false);
         final Retrofit retrofit = RetrofitSingleton.retrofit;
+        fotoPerfil = null;
         userName = v.findViewById(R.id.novo_nome);
         password = v.findViewById(R.id.new_pass);
         passwordConfirmation = v.findViewById(R.id.new_pass_confirmation);
@@ -63,6 +71,8 @@ public class Configuracoes extends Fragment {
                     u.nome = userName.getText().toString().trim();
                     if (!password.getText().toString().isEmpty())
                         u.senha = password.getText().toString();
+                    if(fotoPerfil != null)
+                        u.setFotoPerfil(fotoPerfil);
                     Call<User> editarPerfil = RetrofitSingleton.getInstance().redesocialapi.editarPerfil(u);
                     editarPerfil.enqueue(new Callback<User>() {
                         @Override
@@ -78,6 +88,7 @@ public class Configuracoes extends Fragment {
                 }
             }
         });
+
         return v;
     }
 
@@ -109,5 +120,6 @@ public class Configuracoes extends Fragment {
     {
         this.loading = loading;
     }
+
 
 }

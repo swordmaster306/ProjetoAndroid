@@ -54,7 +54,8 @@ public class FeedPrincipalFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if(animation != null) animation.start();
+        animation.start();
+        Toast.makeText(getActivity(), "CRIANDO", Toast.LENGTH_SHORT).show();
         View v = inflater.inflate(R.layout.fragment_feed_principal, container, false);
         m = (MainActivity) getActivity();
         feed = v.findViewById(R.id.container);

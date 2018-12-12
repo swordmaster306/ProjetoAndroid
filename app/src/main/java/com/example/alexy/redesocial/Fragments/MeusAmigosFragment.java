@@ -77,10 +77,10 @@ public class MeusAmigosFragment extends Fragment {
 
         CardView card = (CardView) getActivity().getLayoutInflater().inflate(R.layout.fragment_busca, feed, false);
         TextView t = (TextView) card.findViewById(R.id.ResultadoNome);
-        TextView t2 = (TextView) card.findViewById(R.id.ResultadoDado);
+        //TextView t2 = (TextView) card.findViewById(R.id.ResultadoDado);
         ImageView foto = (ImageView) card.findViewById(R.id.ResultadoImagem);
         t.setText(u.getNome());
-        t2.setText(u.getQtdHistorias().toString());
+        //t2.setText(u.getQtdHistorias().toString());
 
 
         if(u.getFotoPerfil() != null)

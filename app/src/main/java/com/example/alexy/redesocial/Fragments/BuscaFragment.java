@@ -78,7 +78,7 @@ public class BuscaFragment extends Fragment {
     private void cardbusca(final User u) {
         CardView card = (CardView) getActivity().getLayoutInflater().inflate(R.layout.fragment_busca, busca, false);
         TextView t = (TextView) card.findViewById(R.id.ResultadoNome);
-        TextView t2 = (TextView) card.findViewById(R.id.ResultadoDado);
+        //TextView t2 = (TextView) card.findViewById(R.id.ResultadoDado);
         ImageView foto = (ImageView) card.findViewById(R.id.ResultadoImagem);
 
         t.setText(u.getNome());

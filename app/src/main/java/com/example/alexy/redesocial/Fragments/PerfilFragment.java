@@ -53,7 +53,6 @@ public class PerfilFragment extends Fragment {
     private List<Historia> historias;
 
 
-    private Button editarPerfilButton;
     private Button addDeleteButton;
     MainActivity m;
 
@@ -72,10 +71,7 @@ public class PerfilFragment extends Fragment {
         View v = getActivity().getLayoutInflater().inflate(R.layout.fragment_perfil, container, false);
         m = (MainActivity) getActivity();
         m.TravarActivity();
-        editarPerfilButton = v.findViewById(R.id.editarPerfilButton);
-        if(RetrofitSingleton.getInstance().token.userid != user.userId){
-            editarPerfilButton.setVisibility(View.GONE);
-        }
+
 
         addDeleteButton = v.findViewById(R.id.addDeleteButton);
 
@@ -88,7 +84,7 @@ public class PerfilFragment extends Fragment {
             addDeleteButton.setOnClickListener(adicionarListener);
         }else if(status.equals("Aprovada")){//eh amigo
             //Colocar icone de deletar
-            addDeleteButton.setText("Remover");
+            addDeleteButton.setText("Desfazer amizade");
             addDeleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -113,7 +109,7 @@ public class PerfilFragment extends Fragment {
 
             addDeleteButton.setVisibility(View.GONE);
         }else if (status.equals("Pendente")){
-            addDeleteButton.setText("Pendente");
+            addDeleteButton.setText("Amizade pendente");
             addDeleteButton.setEnabled(false);
         }
 
@@ -346,7 +342,7 @@ public class PerfilFragment extends Fragment {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     //Colocar icone de pendente
-                    addDeleteButton.setText("Pendente");
+                    addDeleteButton.setText("Amizade pendente");
                     addDeleteButton.setEnabled(false);
                     Toast.makeText(getActivity(), "Amigo adicionado com sucesso", Toast.LENGTH_SHORT).show();
                 }

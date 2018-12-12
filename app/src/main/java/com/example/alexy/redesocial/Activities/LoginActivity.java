@@ -24,8 +24,8 @@ public class LoginActivity extends AppCompatActivity {
     private EditText password;
     private Button loginButton;
 
-    public void onForgetPassClickHandler(View v) {
-        System.out.println("onForgetPassClickHandler");
+    public void onSobreClickHandler(View v) {
+        this.changeActivity(SobreActivity.class);
     }
 
     public void onSignUpClickHandler(View v) {

@@ -29,7 +29,7 @@ public class SobreFragment extends Fragment {
 
         int count = getActivity().getSupportFragmentManager().getFragments().size();
         Toast.makeText(getActivity(), String.valueOf(count), Toast.LENGTH_SHORT).show();
-        return inflater.inflate(R.layout.fragment_sobre, container, false);
+        return inflater.inflate(R.layout.activity_sobre, container, false);
     }
 
 }

@@ -1,8 +1,10 @@
 package com.example.alexy.redesocial.Activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.app.Activity;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -10,6 +12,7 @@ import android.widget.Toast;
 import com.example.alexy.redesocial.R;
 import com.example.alexy.redesocial.Singletons.RetrofitSingleton;
 import com.example.alexy.redesocial.models.User;
+import com.example.alexy.redesocial.utils.ConversorBase64;
 import com.example.alexy.redesocial.utils.RegExValidation;
 
 import retrofit2.Call;
@@ -21,6 +24,7 @@ public class SignUpActivity extends Activity {
     private EditText name;
     private EditText email;
     private EditText password;
+    private String fotoPerfil;
 
     public Boolean validateForm() {
         String name = this.name.getText().toString();
@@ -55,6 +59,15 @@ public class SignUpActivity extends Activity {
         }
     }
 
+
+    public void capturarFotoClickHandler(View v){
+        int REQUEST_IMAGE_CAPTURE = 51;
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,11 +77,26 @@ public class SignUpActivity extends Activity {
         this.password = findViewById(R.id.passwordInput);
     }
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        int REQUEST_IMAGE_CAPTURE = 51;
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            fotoPerfil = ConversorBase64.bitmaptob64(imageBitmap);
+        }
+    }
+
+
     public void cadastrar(){
         User user = new User();
         user.setEmail(email.getText().toString());
         user.setNome(name.getText().toString());
         user.setSenha(password.getText().toString());
+        if(fotoPerfil != null){
+            user.setFotoPerfil(fotoPerfil);
+        }
         Call<Void> cadastro = RetrofitSingleton.getInstance().redesocialapi.cadastrar(user);
         Callback<Void> callbackcadastro = new Callback<Void>() {
             @Override

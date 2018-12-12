@@ -4,39 +4,34 @@
         <item
             android:id="@+id/publicacoes"
             android:checked="false"
-            android:icon="@android:drawable/btn_star"
+            android:icon="@android:drawable/stat_notify_chat"
             android:title="Publicações"/>
         <item
             android:id="@+id/meu_perfil"
             android:checked="false"
-            android:icon="@android:drawable/btn_star"
+            android:icon="@android:drawable/ic_menu_myplaces"
             android:title="Meu perfil"/>
         <item
             android:id="@+id/amigos"
             android:checked="false"
-            android:icon="@android:drawable/btn_star"
+            android:icon="@android:drawable/btn_star_big_on"
             android:title="Amigos"/>
 
         <item
             android:id="@+id/amizadesPendentes"
             android:checked="false"
-            android:icon="@android:drawable/btn_star"
+            android:icon="@android:drawable/ic_menu_compass"
             android:title="Amizades Pendentes"/>
 
         <item
             android:id="@+id/configuracoes"
             android:checked="false"
-            android:icon="@android:drawable/btn_star"
+            android:icon="@android:drawable/ic_menu_manage"
             android:title="Configurações"/>
-        <item
-            android:id="@+id/sobre"
-            android:checked="false"
-            android:icon="@android:drawable/btn_star"
-            android:title="Sobre"/>
         <item
             android:id="@+id/sair"
             android:checked="false"
-            android:icon="@android:drawable/btn_star"
+            android:icon="@android:drawable/ic_menu_close_clear_cancel"
             android:title="Sair"/>
     </group>
 
